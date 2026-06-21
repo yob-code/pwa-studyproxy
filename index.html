@@ -153,18 +153,24 @@ textarea::placeholder{color:var(--gray400)}
         <div class="brand-sub" id="brand-sub">難関国立 レベルA対策</div>
       </div>
     </div>
-    <div class="header-stats">
-      <div class="hstat">
-        <div class="hstat-val" id="h-total">0</div>
-        <div class="hstat-lbl">演習数</div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+      <div style="display:flex;gap:6px">
+        <button class="lv-btn btn btn-sm active" data-lv="A" onclick="setLevel('A')">A 難関国立文系</button>
+        <button class="lv-btn btn btn-sm" data-lv="C" onclick="setLevel('C')">C 共通テスト</button>
       </div>
-      <div class="hstat">
-        <div class="hstat-val" id="h-days">0</div>
-        <div class="hstat-lbl">学習日</div>
-      </div>
-      <div class="hstat">
-        <div class="hstat-val" id="h-avg">—</div>
-        <div class="hstat-lbl">正答率</div>
+      <div style="display:flex;gap:16px">
+        <div class="hstat">
+          <div class="hstat-val" id="h-total">0</div>
+          <div class="hstat-lbl">演習数</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val" id="h-days">0</div>
+          <div class="hstat-lbl">学習日</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val" id="h-avg">—</div>
+          <div class="hstat-lbl">正答率</div>
+        </div>
       </div>
     </div>
   </div>
