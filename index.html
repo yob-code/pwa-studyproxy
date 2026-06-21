@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#534AB7">
+<link rel="manifest" href="manifest.json">
+<title>受験AI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#534AB7;--purple-light:#EEEDFE;--purple-dark:#3C3489;
+  --teal:#1D9E75;--teal-light:#E1F5EE;
+  --amber:#BA7517;--amber-light:#FAEEDA;
+  --red:#E24B4A;--red-light:#FCEBEB;
+  --gray:#F1EFE8;--gray-mid:#888780;--gray-dark:#2C2C2A;
+  --text:#1a1a1a;--text-sec:#555;--text-hint:#999;
+  --border:#e0ddd6;--bg:#f8f7f4;--white:#fff;
+  --radius:10px;--radius-sm:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:800px;margin:0 auto;padding:12px}
+
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.header-left{display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;background:var(--purple);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
+.logo-text{font-size:15px;font-weight:600}
+.level-badge{padding:4px 10px;background:var(--amber-light);color:var(--amber);border-radius:20px;font-size:12px;font-weight:600}
+.worker-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.worker-input{padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;width:220px;color:var(--text);background:var(--white)}
+.worker-input:focus{outline:none;border-color:var(--purple)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0}
+.status-dot.ok{background:var(--teal)}
+.btn-save{padding:5px 10px;border-radius:var(--radius-sm);font-size:12px;background:var(--purple);color:#fff;border:none;cursor:pointer}
+
+.tabs{display:flex;gap:3px;margin-bottom:12px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:4px}
+.tab{flex:1;padding:8px 4px;text-align:center;font-size:13px;font-weight:500;border-radius:7px;cursor:pointer;color:var(--text-sec);transition:all 0.15s}
+.tab.active{background:var(--purple);color:#fff}
+.tab:hover:not(.active){background:var(--gray)}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.card-label{font-size:11px;font-weight:600;color:var(--text-hint);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
+
+.config-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select{padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);background:var(--white);cursor:pointer;max-width:100%}
+select:focus{outline:none;border-color:var(--purple)}
+.btn{padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--purple);color:#fff}
+.btn-primary:hover{background:var(--purple-dark)}
+.btn-primary:disabled{background:#c0bce8;cursor:not-allowed}
+.btn-outline{background:var(--white);color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{background:var(--gray)}
+.btn-sm{padding:5px 10px;font-size:12px}
+
+.question-box{background:var(--gray);border-radius:var(--radius-sm);padding:14px;font-size:14px;line-height:1.8;color:var(--text);min-height:80px;white-space:pre-wrap;word-break:break-word}
+.question-box.empty{color:var(--text-hint);display:flex;align-items:center;justify-content:center;min-height:100px;font-size:13px}
+textarea{width:100%;min-height:120px;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;color:var(--text);resize:vertical;line-height:1.7}
+textarea:focus{outline:none;border-color:var(--purple)}
+textarea::placeholder{color:var(--text-hint)}
+
+.feedback{border-radius:var(--radius-sm);padding:14px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-break:break-word;margin-top:12px}
+.feedback.ok{background:var(--purple-light);border-left:3px solid var(--purple);color:#3C3489}
+.feedback.err{background:var(--red-light);border-left:3px solid var(--red);color:#A32D2D}
+
+.stat-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:80px;background:var(--gray);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.stat-val{font-size:20px;font-weight:600}
+.stat-lbl{font-size:11px;color:var(--text-sec);margin-top:2px}
+
+.weak-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--gray);border-radius:var(--radius-sm);margin-bottom:6px;flex-wrap:wrap}
+.weak-name{flex:1;font-size:13px;min-width:120px}
+.bar-wrap{width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
+.bar-fill{height:5px;border-radius:3px}
+.bar-fill.low{background:var(--red)}
+.bar-fill.mid{background:var(--amber)}
+.bar-fill.high{background:var(--teal)}
+.weak-pct{font-size:12px;color:var(--text-sec);width:30px;text-align:right;flex-shrink:0}
+
+.loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
+
+.action-row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
+input[type=text]{padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);background:var(--white);width:100%}
+input[type=text]:focus{outline:none;border-color:var(--purple)}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">受験AI</span>
+      <span class="level-badge">レベル A｜難関国立</span>
+    </div>
+    <div class="worker-row">
+      <div class="status-dot" id="status-dot"></div>
+      <input class="worker-input" type="text" id="worker-url" placeholder="Worker URL を入力" oninput="saveWorkerUrl()">
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('drill')">問題演習</div>
+    <div class="tab" onclick="switchTab('essay')">記述添削</div>
+    <div class="tab" onclick="switchTab('analysis')">弱点分析</div>
+  </div>
+
+  <!-- 問題演習 -->
+  <div id="tab-drill">
+    <div class="card">
+      <div class="card-label">科目・分野</div>
+      <div class="config-row">
+        <select id="subject" onchange="updateFields()">
+          <option value="math">数学</option>
+          <option value="english">英語</option>
+          <option value="japanese">現代文</option>
+          <option value="classical">古文・漢文</option>
+          <option value="physics">物理</option>
+          <option value="chemistry">化学</option>
+          <option value="biology">生物</option>
+          <option value="jphistory">日本史</option>
+          <option value="world">世界史</option>
+          <option value="geo">地理</option>
+        </select>
+        <select id="field"></select>
+        <button class="btn btn-primary" id="gen-btn" onclick="generateQuestion()">問題を生成</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">問題</div>
+      <div class="question-box empty" id="question-display">科目を選んで「問題を生成」を押してください</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">解答欄</div>
+      <textarea id="answer-input" placeholder="ここに解答を入力..."></textarea>
+      <div class="action-row">
+        <button class="btn btn-outline" onclick="showHint()">ヒント</button>
+        <button class="btn btn-primary" id="score-btn" onclick="scoreAnswer()">採点する</button>
+      </div>
+      <div id="feedback-drill" class="hidden"></div>
+    </div>
+  </div>
+
+  <!-- 記述添削 -->
+  <div id="tab-essay" class="hidden">
+    <div class="card">
+      <div class="card-label">科目・問題概要</div>
+      <div class="config-row" style="margin-bottom:10px">
+        <select id="essay-subject">
+          <option value="math">数学</option>
+          <option value="english">英語（英作文）</option>
+          <option value="japanese">現代文（論述・要約）</option>
+          <option value="classical">古文（現代語訳）</option>
+          <option value="physics">物理（記述）</option>
+          <option value="chemistry">化学（記述）</option>
+        </select>
+        <input type="text" id="essay-topic" placeholder="問題の概要（任意）" style="flex:1;min-width:160px">
+      </div>
+      <div class="card-label">自分の解答</div>
+      <textarea id="essay-input" style="min-height:160px" placeholder="添削したい解答を貼り付けまたは入力..."></textarea>
+      <div class="action-row">
+        <button class="btn btn-primary" id="essay-btn" onclick="scoreEssay()">AIに添削を依頼</button>
+      </div>
+      <div id="feedback-essay" class="hidden"></div>
+    </div>
+  </div>
+
+  <!-- 弱点分析 -->
+  <div id="tab-analysis" class="hidden">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-val" id="stat-total">0</div><div class="stat-lbl">累計演習数</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-avg">—</div><div class="stat-lbl">平均正答率</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-days">0</div><div class="stat-lbl">学習日数</div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">科目別正答率（低い順）</div>
+      <div id="weak-list"><div style="color:var(--text-hint);font-size:13px;text-align:center;padding:20px">演習を積むと表示されます</div></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-outline btn-sm" onclick="exportJSON()">JSONエクスポート</button>
+      <button class="btn btn-outline btn-sm" onclick="clearHistory()">履歴リセット</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const LEVEL_DESC = '難関国立大学（阪大・名大・東北大・九大レベル）';
+
+const FIELDS = {
+  math:['全分野','極限・微積分','数列・確率','ベクトル・空間図形','整数・場合の数','複素数・二次曲線'],
+  english:['全分野','長文読解','英作文（自由）','英作文（和文英訳）','文法・語法'],
+  japanese:['全分野','評論文読解','小説読解','要約・論述'],
+  classical:['全分野','古文読解','漢文読解','古文文法'],
+  physics:['全分野','力学','電磁気','波動','熱力学','原子'],
+  chemistry:['全分野','理論化学','有機化学','無機化学'],
+  biology:['全分野','細胞・遺伝','生態・進化','動物生理','植物生理'],
+  jphistory:['全分野','原始・古代','中世','近世','近代','現代'],
+  world:['全分野','古代・中世','近世','近代（19c）','現代（20c）'],
+  geo:['全分野','地形・気候','産業・資源','地誌'],
+};
+
+const SUBJECT_NAMES = {
+  math:'数学',english:'英語',japanese:'現代文',classical:'古文・漢文',
+  physics:'物理',chemistry:'化学',biology:'生物',
+  jphistory:'日本史',world:'世界史',geo:'地理'
+};
+
+let currentQuestion = '';
+let history = JSON.parse(localStorage.getItem('examHistory_v2') || '{}');
+
+// Worker URL
+const savedUrl = localStorage.getItem('workerUrl') || '';
+document.getElementById('worker-url').value = savedUrl;
+updateStatusDot();
+
+function saveWorkerUrl(){
+  const url = document.getElementById('worker-url').value.trim();
+  localStorage.setItem('workerUrl', url);
+  updateStatusDot();
+}
+
+function updateStatusDot(){
+  const url = document.getElementById('worker-url').value.trim();
+  document.getElementById('status-dot').className = 'status-dot' + (url.startsWith('https://') ? ' ok' : '');
+}
+
+function getWorkerUrl(){
+  return document.getElementById('worker-url').value.trim();
+}
+
+function updateFields(){
+  const subj = document.getElementById('subject').value;
+  const f = document.getElementById('field');
+  f.innerHTML = (FIELDS[subj]||['全分野']).map(v=>`<option>${v}</option>`).join('');
+}
+updateFields();
+
+async function callWorker(prompt){
+  const url = getWorkerUrl();
+  if(!url) throw new Error('Worker URLを入力してください');
+  const res = await fetch(url, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({prompt})
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return data.text;
+}
+
+function setLoading(btnId, loading, label){
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading ? '<span class="loading"></span> ' + label : label;
+}
+
+async function generateQuestion(){
+  const subj = document.getElementById('subject');
+  const subjVal = subj.value;
+  const subjName = SUBJECT_NAMES[subjVal];
+  const field = document.getElementById('field').value;
+  const qbox = document.getElementById('question-display');
+
+  setLoading('gen-btn', true, '生成中...');
+  qbox.className = 'question-box';
+  qbox.textContent = '問題を生成しています...';
+  document.getElementById('feedback-drill').classList.add('hidden');
+  document.getElementById('answer-input').value = '';
+
+  const prompt = `あなたは${LEVEL_DESC}の入試問題作成の専門家です。
+
+条件：
+- 科目：${subjName}
+- 分野：${field}
+- 難易度：${LEVEL_DESC}の本番入試レベル
+- 形式：記述式
+- 問題文のみ出力（解答・解説・前置きは不要）
+
+問題文のみ出力してください。`;
+
+  try{
+    const text = await callWorker(prompt);
+    currentQuestion = text;
+    qbox.textContent = text;
+    recordHistory(subjVal, field, null);
+  } catch(e){
+    qbox.className = 'question-box empty';
+    qbox.textContent = 'エラー: ' + e.message;
+  } finally {
+    setLoading('gen-btn', false, '次の問題');
+  }
+}
+
+async function scoreAnswer(){
+  if(!currentQuestion){alert('まず問題を生成してください');return;}
+  const ans = document.getElementById('answer-input').value.trim();
+  if(!ans){alert('解答を入力してください');return;}
+  const subjVal = document.getElementById('subject').value;
+  const subjName = SUBJECT_NAMES[subjVal];
+  const field = document.getElementById('field').value;
+
+  setLoading('score-btn', true, '採点中...');
+  const fb = document.getElementById('feedback-drill');
+  fb.className = 'feedback ok';
+  fb.textContent = '採点しています...';
+  fb.classList.remove('hidden');
+
+  const prompt = `あなたは${LEVEL_DESC}の採点官です。
+
+【問題】
+${currentQuestion}
+
+【解答】
+${ans}
+
+以下の形式で採点してください：
+◎ 評価（A〜D）と得点（/10点）
+◎ 良かった点
+◎ 改善すべき点
+◎ 模範解答のポイント
+◎ 次に重点的に学ぶべきこと
+
+${LEVEL_DESC}基準で厳しく評価してください。`;
+
+  try{
+    const text = await callWorker(prompt);
+    fb.textContent = text;
+    const grade = text.match(/評価[：:]\s*([A-D])/)?.[1];
+    const score = grade ? {A:90,B:70,C:50,D:30}[grade] : 60;
+    recordHistory(subjVal, field, score);
+    updateAnalysis();
+  } catch(e){
+    fb.className = 'feedback err';
+    fb.textContent = 'エラー: ' + e.message;
+  } finally {
+    setLoading('score-btn', false, '採点する');
+  }
+}
+
+async function showHint(){
+  if(!currentQuestion){alert('まず問題を生成してください');return;}
+  const fb = document.getElementById('feedback-drill');
+  fb.className = 'feedback ok';
+  fb.textContent = 'ヒントを生成中...';
+  fb.classList.remove('hidden');
+  const prompt = `次の問題のヒントを、答えを言わずに3点だけ挙げてください。\n\n${currentQuestion}`;
+  try{
+    fb.textContent = await callWorker(prompt);
+  } catch(e){
+    fb.className = 'feedback err';
+    fb.textContent = 'エラー: ' + e.message;
+  }
+}
+
+async function scoreEssay(){
+  const ans = document.getElementById('essay-input').value.trim();
+  if(!ans){alert('解答を入力してください');return;}
+  const subjEl = document.getElementById('essay-subject');
+  const subjName = subjEl.options[subjEl.selectedIndex].text;
+  const topic = document.getElementById('essay-topic').value.trim();
+
+  setLoading('essay-btn', true, '添削中...');
+  const fb = document.getElementById('feedback-essay');
+  fb.className = 'feedback ok';
+  fb.textContent = '添削しています...';
+  fb.classList.remove('hidden');
+
+  const prompt = `あなたは${LEVEL_DESC}の記述添削専門家です。
+
+科目：${subjName}${topic ? '\n問題概要：' + topic : ''}
+
+【解答】
+${ans}
+
+以下の観点で添削してください：
+1. 総合評価（S/A/B/C/D）と理由
+2. 構成・論理の評価
+3. 内容・正確さの評価
+4. 表現・記述の評価
+5. 具体的な改善点
+6. ${LEVEL_DESC}で求められる解答との差
+
+厳しく、かつ建設的に添削してください。`;
+
+  try{
+    fb.textContent = await callWorker(prompt);
+  } catch(e){
+    fb.className = 'feedback err';
+    fb.textContent = 'エラー: ' + e.message;
+  } finally {
+    setLoading('essay-btn', false, 'AIに添削を依頼');
+  }
+}
+
+function recordHistory(subjVal, field, score){
+  const today = new Date().toDateString();
+  const key = subjVal + '|' + field;
+  if(!history[key]) history[key] = {subjVal, field, scores:[], dates:[]};
+  if(score !== null) history[key].scores.push(score);
+  if(!history[key].dates.includes(today)) history[key].dates.push(today);
+  localStorage.setItem('examHistory_v2', JSON.stringify(history));
+}
+
+function updateAnalysis(){
+  history = JSON.parse(localStorage.getItem('examHistory_v2') || '{}');
+  let total = 0, sumScore = 0, countScore = 0;
+  const allDates = new Set();
+  const subjMap = {};
+
+  for(const [key, d] of Object.entries(history)){
+    d.dates.forEach(dt => allDates.add(dt));
+    total += d.scores.length;
+    const avg = d.scores.length ? Math.round(d.scores.reduce((a,b)=>a+b,0)/d.scores.length) : null;
+    if(avg !== null){ sumScore += avg; countScore++; }
+    const label = (SUBJECT_NAMES[d.subjVal] || d.subjVal) + (d.field !== '全分野' ? ' › ' + d.field : '');
+    subjMap[label] = {avg, count: d.scores.length};
+  }
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-avg').textContent = countScore ? Math.round(sumScore/countScore)+'%' : '—';
+  document.getElementById('stat-days').textContent = allDates.size;
+
+  const list = document.getElementById('weak-list');
+  const items = Object.entries(subjMap).sort((a,b)=>(a[1].avg??999)-(b[1].avg??999));
+
+  if(!items.length){
+    list.innerHTML = '<div style="color:var(--text-hint);font-size:13px;text-align:center;padding:20px">演習を積むと表示されます</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(([label, {avg, count}])=>{
+    const pct = avg ?? 0;
+    const cls = pct < 45 ? 'low' : pct < 70 ? 'mid' : 'high';
+    return `<div class="weak-item">
+      <span class="weak-name">${label} <span style="font-size:11px;color:var(--text-hint)">(${count}問)</span></span>
+      <div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
+      <span class="weak-pct">${avg !== null ? avg+'%' : '—'}</span>
+    </div>`;
+  }).join('');
+}
+
+function exportJSON(){
+  const data = {
+    exportDate: new Date().toISOString(),
+    level: 'A',
+    history
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `exam-history-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function clearHistory(){
+  if(confirm('学習履歴をすべて削除しますか？')){
+    localStorage.removeItem('examHistory_v2');
+    history = {};
+    updateAnalysis();
+  }
+}
+
+function switchTab(name){
+  ['drill','essay','analysis'].forEach((t,i)=>{
+    document.getElementById('tab-'+t).classList.toggle('hidden', t!==name);
+    document.querySelectorAll('.tab')[i].classList.toggle('active', t===name);
+  });
+  if(name==='analysis') updateAnalysis();
+}
+
+// PWA登録
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
