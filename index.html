@@ -3,104 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#534AB7">
+<meta name="theme-color" content="#2563EB">
 <link rel="manifest" href="manifest.json">
 <title>受験AI</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --purple:#534AB7;--purple-light:#EEEDFE;--purple-dark:#3C3489;
-  --teal:#1D9E75;--teal-light:#E1F5EE;
-  --amber:#BA7517;--amber-light:#FAEEDA;
-  --red:#E24B4A;--red-light:#FCEBEB;
-  --gray:#F1EFE8;--gray-mid:#888780;--gray-dark:#2C2C2A;
-  --text:#1a1a1a;--text-sec:#555;--text-hint:#999;
-  --border:#e0ddd6;--bg:#f8f7f4;--white:#fff;
-  --radius:10px;--radius-sm:6px;
+  --blue:#1D4ED8;--blue-light:#EFF6FF;--blue-dark:#1E40AF;
+  --indigo:#3730A3;--indigo-light:#EEF2FF;
+  --green:#15803D;--green-light:#F0FDF4;
+  --red:#B91C1C;--red-light:#FEF2F2;
+  --amber:#B45309;--amber-light:#FFFBEB;
+  --gray50:#F9FAFB;--gray100:#F3F4F6;--gray200:#E5E7EB;
+  --gray400:#6B7280;--gray600:#374151;--gray800:#1F2937;--gray900:#111827;
+  --white:#FFFFFF;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.08);
+  --shadow:0 4px 16px rgba(0,0,0,0.10);
+  --radius:12px;--radius-sm:8px;--radius-xs:6px;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.app{max-width:800px;margin:0 auto;padding:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;background:var(--gray50);color:var(--gray900);min-height:100vh;font-size:16px}
 
-.header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;flex-wrap:wrap;gap:8px}
-.header-left{display:flex;align-items:center;gap:10px}
-.logo-icon{width:32px;height:32px;background:var(--purple);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
-.logo-text{font-size:15px;font-weight:600}
-.level-badge{padding:4px 10px;background:var(--amber-light);color:var(--amber);border-radius:20px;font-size:12px;font-weight:600}
+.app{max-width:960px;margin:0 auto;padding:20px}
 
-.tabs{display:flex;gap:3px;margin-bottom:12px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:4px}
-.tab{flex:1;padding:8px 4px;text-align:center;font-size:13px;font-weight:500;border-radius:7px;cursor:pointer;color:var(--text-sec);transition:all 0.15s}
-.tab.active{background:var(--purple);color:#fff}
-.tab:hover:not(.active){background:var(--gray)}
+/* ヘッダー */
+.header{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--indigo));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
+.brand-name{font-size:17px;font-weight:700;color:var(--gray900);letter-spacing:-0.3px}
+.brand-sub{font-size:11px;color:var(--gray400);margin-top:1px}
+.header-stats{display:flex;gap:16px}
+.hstat{text-align:center}
+.hstat-val{font-size:18px;font-weight:700;color:var(--blue)}
+.hstat-lbl{font-size:10px;color:var(--gray400);letter-spacing:0.05em}
 
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
-.card-label{font-size:11px;font-weight:600;color:var(--text-hint);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
+/* タブ */
+.tabs{display:flex;gap:4px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:5px;margin-bottom:16px}
+.tab{flex:1;padding:12px 8px;text-align:center;font-size:15px;font-weight:600;border-radius:9px;cursor:pointer;color:var(--gray600);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab.active{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
+.tab:hover:not(.active){background:var(--gray100);color:var(--gray800)}
+.tab-icon{font-size:16px}
 
-.config-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-select{padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);background:var(--white);cursor:pointer;max-width:100%}
-select:focus{outline:none;border-color:var(--purple)}
-.btn{padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--purple);color:#fff}
-.btn-primary:hover{background:var(--purple-dark)}
-.btn-primary:disabled{background:#c0bce8;cursor:not-allowed}
-.btn-outline{background:var(--white);color:var(--text);border:1px solid var(--border)}
-.btn-outline:hover{background:var(--gray)}
-.btn-sm{padding:5px 10px;font-size:12px}
+/* カード */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:20px;margin-bottom:14px}
+.card-title{font-size:14px;font-weight:700;color:var(--gray600);letter-spacing:0.05em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 
-.question-box{background:var(--gray);border-radius:var(--radius-sm);padding:14px;font-size:14px;line-height:1.8;color:var(--text);min-height:80px;white-space:pre-wrap;word-break:break-word}
-.question-box.empty{color:var(--text-hint);display:flex;align-items:center;justify-content:center;min-height:100px;font-size:13px}
-textarea{width:100%;min-height:120px;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;color:var(--text);resize:vertical;line-height:1.7}
-textarea:focus{outline:none;border-color:var(--purple)}
-textarea::placeholder{color:var(--text-hint)}
+/* 科目選択 */
+.select-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select{padding:10px 14px;border:1.5px solid var(--gray200);border-radius:var(--radius-sm);font-size:15px;font-weight:500;color:var(--gray900);background:var(--white);cursor:pointer;transition:border 0.15s}
+select:focus{outline:none;border-color:var(--blue)}
+select:hover{border-color:var(--gray400)}
 
-.feedback{border-radius:var(--radius-sm);padding:14px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-break:break-word;margin-top:12px}
-.feedback.ok{background:var(--purple-light);border-left:3px solid var(--purple);color:#3C3489}
-.feedback.err{background:var(--red-light);border-left:3px solid var(--red);color:#A32D2D}
+/* ボタン */
+.btn{padding:12px 22px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;letter-spacing:0.02em}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.25)}
+.btn-primary:hover{box-shadow:0 4px 14px rgba(37,99,235,0.35);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{background:var(--gray200);color:var(--gray400);box-shadow:none;transform:none;cursor:not-allowed}
+.btn-ghost{background:var(--gray100);color:var(--gray600);border:1.5px solid var(--gray200)}
+.btn-ghost:hover{background:var(--gray200)}
+.btn-green{background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;box-shadow:0 2px 8px rgba(22,163,74,0.25)}
+.btn-green:hover{box-shadow:0 4px 14px rgba(22,163,74,0.35);transform:translateY(-1px)}
+.btn-green:disabled{background:var(--gray200);color:var(--gray400);box-shadow:none;transform:none;cursor:not-allowed}
+.btn-sm{padding:6px 12px;font-size:12px}
+.lv-btn{background:var(--gray100);color:var(--gray600);border:1.5px solid var(--gray200)}
+.lv-btn.active{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(37,99,235,0.25)}
 
-.stat-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.stat-card{flex:1;min-width:80px;background:var(--gray);border-radius:var(--radius-sm);padding:12px;text-align:center}
-.stat-val{font-size:20px;font-weight:600}
-.stat-lbl{font-size:11px;color:var(--text-sec);margin-top:2px}
+/* 問題表示 */
+.question-wrap{background:var(--blue-light);border:1.5px solid #BFDBFE;border-radius:var(--radius-sm);padding:20px;min-height:90px;font-size:16px;line-height:2.0;color:var(--gray900);white-space:pre-wrap;word-break:break-word}
+.question-wrap.empty{color:var(--gray400);display:flex;align-items:center;justify-content:center;min-height:100px;font-size:13px;font-style:italic}
+.question-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.q-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.05em}
+.q-badge.level{background:var(--amber-light);color:var(--amber)}
+.q-badge.subject{background:var(--indigo-light);color:var(--indigo)}
 
-.weak-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--gray);border-radius:var(--radius-sm);margin-bottom:6px;flex-wrap:wrap}
-.weak-name{flex:1;font-size:13px;min-width:120px}
-.bar-wrap{width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
-.bar-fill{height:5px;border-radius:3px}
+/* 解答エリア */
+textarea{width:100%;padding:14px 16px;border:1.5px solid var(--gray200);border-radius:var(--radius-sm);font-size:16px;font-family:inherit;color:var(--gray900);resize:vertical;line-height:1.9;transition:border 0.15s;background:var(--white)}
+textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+textarea::placeholder{color:var(--gray400)}
+
+/* アクション行 */
+.action-row{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+
+/* フィードバック */
+.feedback{border-radius:var(--radius-sm);padding:18px;font-size:16px;line-height:2.0;white-space:pre-wrap;word-break:break-word;margin-top:14px;border:1.5px solid}
+.feedback.ok{background:var(--indigo-light);border-color:#C7D2FE;color:#312E81}
+.feedback.hint{background:var(--amber-light);border-color:#FDE68A;color:#92400E}
+.feedback.err{background:var(--red-light);border-color:#FECACA;color:#991B1B}
+
+/* 弱点分析 */
+.stat-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:90px;background:var(--white);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);padding:14px;text-align:center;border-top:3px solid var(--blue)}
+.stat-val{font-size:28px;font-weight:800;color:var(--gray900)}
+.stat-lbl{font-size:11px;color:var(--gray400);margin-top:3px;letter-spacing:0.05em}
+
+.weak-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--gray50);border:1px solid var(--gray200);border-radius:var(--radius-sm);margin-bottom:8px}
+.weak-rank{width:20px;font-size:12px;font-weight:700;color:var(--gray400);text-align:center;flex-shrink:0}
+.weak-rank.top{color:var(--red)}
+.weak-name{flex:1;font-size:15px;font-weight:500;color:var(--gray900)}
+.bar-wrap{width:80px;height:6px;background:var(--gray200);border-radius:3px;overflow:hidden;flex-shrink:0}
+.bar-fill{height:6px;border-radius:3px;transition:width 0.5s}
 .bar-fill.low{background:var(--red)}
 .bar-fill.mid{background:var(--amber)}
-.bar-fill.high{background:var(--teal)}
-.weak-pct{font-size:12px;color:var(--text-sec);width:30px;text-align:right;flex-shrink:0}
+.bar-fill.high{background:var(--green)}
+.weak-pct{font-size:12px;font-weight:600;color:var(--gray600);width:32px;text-align:right;flex-shrink:0}
 
+/* ストリーク */
+.streak-banner{background:linear-gradient(135deg,var(--blue),var(--indigo));border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.streak-text{font-size:14px;font-weight:600}
+.streak-sub{font-size:12px;opacity:0.8;margin-top:2px}
+.streak-num{font-size:36px;font-weight:800;line-height:1}
+.streak-day{font-size:11px;opacity:0.8;text-align:right}
+
+/* ローディング */
 .loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.hidden{display:none}
 
-.action-row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
-input[type=text]{padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);background:var(--white);width:100%}
-input[type=text]:focus{outline:none;border-color:var(--purple)}
+/* 進捗バー（採点後） */
+.score-display{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--green-light);border:1.5px solid #BBF7D0;border-radius:var(--radius-sm);margin-top:10px}
+.score-grade{font-size:28px;font-weight:800;color:var(--green)}
+.score-info{flex:1}
+.score-title{font-size:13px;font-weight:600;color:var(--gray800)}
+.score-sub{font-size:12px;color:var(--gray400);margin-top:2px}
+
+.hidden{display:none}
+@media(max-width:600px){
+  .header{flex-direction:column;align-items:flex-start}
+  .header-stats{gap:12px}
+  .select-grid{flex-direction:column;align-items:stretch}
+  .select-grid select,.select-grid button{width:100%}
+  .action-row{flex-direction:column}
+  .action-row .btn{width:100%;justify-content:center}
+  .btn-sm{font-size:13px;padding:8px 12px}
+}
+.divider{height:1px;background:var(--gray200);margin:14px 0}
+
+/* 入力欄ラベル */
+.field-label{font-size:12px;font-weight:600;color:var(--gray600);margin-bottom:6px;display:flex;align-items:center;gap:4px}
 </style>
 </head>
 <body>
 <div class="app">
 
+  <!-- ヘッダー -->
   <div class="header">
-    <div class="header-left">
-      <div class="logo-icon">📚</div>
-      <span class="logo-text">受験AI</span>
-      <span class="level-badge">レベル A｜難関国立</span>
-    </div></div>
+    <div class="header-brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-name">受験AI</div>
+        <div class="brand-sub" id="brand-sub">難関国立 レベルA対策</div>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="hstat">
+        <div class="hstat-val" id="h-total">0</div>
+        <div class="hstat-lbl">演習数</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" id="h-days">0</div>
+        <div class="hstat-lbl">学習日</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" id="h-avg">—</div>
+        <div class="hstat-lbl">正答率</div>
+      </div>
+    </div>
   </div>
 
+  <!-- タブ -->
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('drill')">問題演習</div>
-    <div class="tab" onclick="switchTab('essay')">記述添削</div>
-    <div class="tab" onclick="switchTab('analysis')">弱点分析</div>
+    <div class="tab active" onclick="switchTab('drill')">
+      <span class="tab-icon">✏️</span>問題演習
+    </div>
+    <div class="tab" onclick="switchTab('analysis')">
+      <span class="tab-icon">📊</span>弱点分析
+    </div>
   </div>
 
   <!-- 問題演習 -->
   <div id="tab-drill">
+    <!-- 科目選択 -->
     <div class="card">
-      <div class="card-label">科目・分野</div>
-      <div class="config-row">
+      <div class="card-title">📌 科目・分野を選択</div>
+      <div class="select-grid">
         <select id="subject" onchange="updateFields()">
           <option value="math">数学</option>
           <option value="english">英語</option>
@@ -114,71 +198,186 @@ input[type=text]:focus{outline:none;border-color:var(--purple)}
           <option value="geo">地理</option>
         </select>
         <select id="field"></select>
-        <button class="btn btn-primary" id="gen-btn" onclick="generateQuestion()">問題を生成</button>
+        <button class="btn btn-primary" id="gen-btn" onclick="generateQuestion()">
+          ✦ 問題を生成
+        </button>
       </div>
     </div>
 
+    <!-- 問題表示 -->
     <div class="card">
-      <div class="card-label">問題</div>
-      <div class="question-box empty" id="question-display">科目を選んで「問題を生成」を押してください</div>
+      <div class="question-meta" id="q-meta" style="display:none">
+        <span class="q-badge level">レベル A</span>
+        <span class="q-badge subject" id="q-subject-badge"></span>
+      </div>
+      <div class="card-title">📄 問題</div>
+      <div class="question-wrap empty" id="question-display">
+        科目と分野を選んで「問題を生成」を押してください
+      </div>
+      <div id="svg-figure" class="hidden" style="margin-top:14px;text-align:center;background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--radius-sm);padding:16px">
+        <div style="font-size:12px;color:var(--gray400);margin-bottom:8px">📐 補助図形</div>
+        <div id="svg-content"></div>
+      </div>
     </div>
 
+    <!-- 解答・添削 -->
     <div class="card">
-      <div class="card-label">解答欄</div>
-      <textarea id="answer-input" placeholder="ここに解答を入力..."></textarea>
+      <div class="field-label">✍️ 解答欄</div>
+      <textarea id="answer-input" rows="6" placeholder="ここに解答を入力してください..."></textarea>
       <div class="action-row">
-        <button class="btn btn-outline" onclick="showHint()">ヒント</button>
-        <button class="btn btn-primary" id="score-btn" onclick="scoreAnswer()">採点する</button>
+        <button class="btn btn-ghost" onclick="showHint()">💡 ヒント</button>
+        <button class="btn btn-ghost" onclick="showModel()">📖 模範解答</button>
+        <button class="btn btn-green" id="score-btn" onclick="scoreAnswer()">
+          採点・添削する →
+        </button>
       </div>
+      <div id="score-display" class="hidden"></div>
       <div id="feedback-drill" class="hidden"></div>
-    </div>
-  </div>
-
-  <!-- 記述添削 -->
-  <div id="tab-essay" class="hidden">
-    <div class="card">
-      <div class="card-label">科目・問題概要</div>
-      <div class="config-row" style="margin-bottom:10px">
-        <select id="essay-subject">
-          <option value="math">数学</option>
-          <option value="english">英語（英作文）</option>
-          <option value="japanese">現代文（論述・要約）</option>
-          <option value="classical">古文（現代語訳）</option>
-          <option value="physics">物理（記述）</option>
-          <option value="chemistry">化学（記述）</option>
-        </select>
-        <input type="text" id="essay-topic" placeholder="問題の概要（任意）" style="flex:1;min-width:160px">
+      <!-- 質問コーナー -->
+      <div id="question-corner" class="hidden" style="margin-top:14px">
+        <div style="background:var(--amber-light);border:1.5px solid #FDE68A;border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:var(--amber);margin-bottom:8px">
+          ⚠️ 個人情報（名前・学校名・住所など）は入力しないでください
+        </div>
+        <div class="field-label">❓ わからない点を質問する</div>
+        <textarea id="question-input" rows="3" placeholder="例：この問題の積分の解き方がわかりません。どこから考えればいいですか？"></textarea>
+        <div class="action-row">
+          <button class="btn btn-ghost" id="ask-btn" onclick="askQuestion()">質問する →</button>
+        </div>
+        <div id="feedback-question" class="hidden"></div>
       </div>
-      <div class="card-label">自分の解答</div>
-      <textarea id="essay-input" style="min-height:160px" placeholder="添削したい解答を貼り付けまたは入力..."></textarea>
-      <div class="action-row">
-        <button class="btn btn-primary" id="essay-btn" onclick="scoreEssay()">AIに添削を依頼</button>
-      </div>
-      <div id="feedback-essay" class="hidden"></div>
     </div>
   </div>
 
   <!-- 弱点分析 -->
   <div id="tab-analysis" class="hidden">
+    <!-- 推定偏差値カード -->
+    <div id="deviation-card" style="background:linear-gradient(135deg,#1D4ED8,#3730A3);border-radius:var(--radius);padding:20px;margin-bottom:14px;color:#fff">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:12px;opacity:0.8;letter-spacing:0.08em;margin-bottom:6px">推定偏差値（目安）</div>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span id="deviation-value" style="font-size:52px;font-weight:800;line-height:1">—</span>
+            <span style="font-size:16px;opacity:0.8">前後</span>
+          </div>
+          <div id="deviation-label" style="font-size:13px;opacity:0.8;margin-top:6px">演習を積むと表示されます</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;opacity:0.7;margin-bottom:4px">到達目標まで</div>
+          <div id="deviation-target" style="font-size:22px;font-weight:700">—</div>
+          <div style="font-size:11px;opacity:0.7;margin-top:2px">問</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;background:rgba(255,255,255,0.15);border-radius:6px;height:8px;overflow:hidden">
+        <div id="deviation-bar" style="height:8px;border-radius:6px;background:#fff;width:0%;transition:width 0.8s"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;opacity:0.6;margin-top:4px">
+        <span>偏差値40</span><span>50</span><span>60</span><span>70以上</span>
+      </div>
+    </div>
+
+    <!-- 科目別レーダーチャート -->
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title">🎯 科目別到達度</div>
+      <div style="display:flex;justify-content:center;padding:8px 0">
+        <canvas id="radar-chart" width="320" height="280"></canvas>
+      </div>
+    </div>
+
+    <div class="streak-banner">
+      <div>
+        <div class="streak-text">🔥 学習継続中</div>
+        <div class="streak-sub">毎日の積み重ねが合格への近道</div>
+      </div>
+      <div>
+        <div class="streak-num" id="streak-num">0</div>
+        <div class="streak-day">日連続</div>
+      </div>
+    </div>
+
     <div class="stat-row">
-      <div class="stat-card"><div class="stat-val" id="stat-total">0</div><div class="stat-lbl">累計演習数</div></div>
-      <div class="stat-card"><div class="stat-val" id="stat-avg">—</div><div class="stat-lbl">平均正答率</div></div>
-      <div class="stat-card"><div class="stat-val" id="stat-days">0</div><div class="stat-lbl">学習日数</div></div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-total">0</div>
+        <div class="stat-lbl">累計演習数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-avg">—</div>
+        <div class="stat-lbl">平均正答率</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-days">0</div>
+        <div class="stat-lbl">学習日数</div>
+      </div>
     </div>
+
     <div class="card">
-      <div class="card-label">科目別正答率（低い順）</div>
-      <div id="weak-list"><div style="color:var(--text-hint);font-size:13px;text-align:center;padding:20px">演習を積むと表示されます</div></div>
+      <div class="card-title">⚠️ 苦手分野ランキング（正答率低い順）</div>
+      <div id="weak-list">
+        <div style="color:var(--gray400);font-size:13px;text-align:center;padding:24px">
+          演習を積むと苦手分野が表示されます
+        </div>
+      </div>
     </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-outline btn-sm" onclick="exportJSON()">JSONエクスポート</button>
-      <button class="btn btn-outline btn-sm" onclick="clearHistory()">履歴リセット</button>
+
+    <div class="card">
+      <div class="card-title">📅 科目別演習数</div>
+      <div id="subject-chart"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
+      <button class="btn btn-ghost btn-sm" onclick="exportJSON()">💾 JSONエクスポート</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearHistory()">🗑 履歴リセット</button>
     </div>
   </div>
 
 </div>
 
 <script>
-const LEVEL_DESC = '難関国立大学（阪大・名大・東北大・九大レベル）';
+const WORKER_URL = "https://study-proxy-morning-silence-f64f.ksey-fgljfsmg7475219t.workers.dev";
+const LEVELS_PLACEHOLDER = ''; // replaced
+
+const LEVELS = {
+  A: {
+    label: 'レベル A',
+    desc: '難関国立・文系（阪大・名大・旧帝文系）',
+    prompt: '難関国立大学文系学部（阪大・名大・東北大・九大の文系レベル）',
+    badge: 'background:var(--amber-light);color:var(--amber)',
+    sub: '難関国立文系 レベルA対策',
+    note: '文系・標準〜応用・記述式中心',
+  },
+  C: {
+    label: 'レベル C',
+    desc: '共通テスト重視',
+    prompt: '共通テスト（センター試験レベル）',
+    badge: 'background:var(--green-light);color:var(--green)',
+    sub: '共通テスト レベルC対策',
+    note: 'マーク式・標準レベル',
+  },
+};
+let currentLevel = localStorage.getItem('examLevel') || 'A';
+
+function setLevel(lv){
+  currentLevel = lv;
+  localStorage.setItem('examLevel', lv);
+  const L = LEVELS[lv];
+  document.getElementById('level-badge').textContent = L.label;
+  document.getElementById('level-badge').style.cssText = L.badge + ';padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.05em';
+  document.getElementById('brand-sub').textContent = L.sub;
+  document.getElementById('level-note').textContent = L.note;
+  document.querySelectorAll('.lv-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lv === lv);
+  });
+  // 問題リセット
+  currentQuestion = '';
+  document.getElementById('question-display').className = 'question-wrap empty';
+  document.getElementById('question-display').textContent = '科目と分野を選んで「問題を生成」を押してください';
+  document.getElementById('q-meta').style.display = 'none';
+  document.getElementById('feedback-drill').classList.add('hidden');
+  document.getElementById('score-display').classList.add('hidden');
+  document.getElementById('answer-input').value = '';
+  document.getElementById('svg-figure').classList.add('hidden');
+}
+
+function getLevelDesc(){ return LEVELS[currentLevel].prompt; }
 
 const FIELDS = {
   math:['全分野','極限・微積分','数列・確率','ベクトル・空間図形','整数・場合の数','複素数・二次曲線'],
@@ -192,7 +391,6 @@ const FIELDS = {
   world:['全分野','古代・中世','近世','近代（19c）','現代（20c）'],
   geo:['全分野','地形・気候','産業・資源','地誌'],
 };
-
 const SUBJECT_NAMES = {
   math:'数学',english:'英語',japanese:'現代文',classical:'古文・漢文',
   physics:'物理',chemistry:'化学',biology:'生物',
@@ -200,28 +398,24 @@ const SUBJECT_NAMES = {
 };
 
 let currentQuestion = '';
-let history = JSON.parse(localStorage.getItem('examHistory_v2') || '{}');
-
-// Worker URL
-const savedUrl = "https://study-proxy-morning-silence-f64f.ksey-fgljfsmg7475219t.workers.dev";
-
-
-
-function getWorkerUrl(){
-  return savedUrl;
-}
+let currentSubj = 'math';
+let currentField = '全分野';
+let history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
 
 function updateFields(){
-  const subj = document.getElementById('subject').value;
+  currentSubj = document.getElementById('subject').value;
   const f = document.getElementById('field');
-  f.innerHTML = (FIELDS[subj]||['全分野']).map(v=>`<option>${v}</option>`).join('');
+  f.innerHTML = (FIELDS[currentSubj]||['全分野']).map(v=>`<option>${v}</option>`).join('');
+  currentField = '全分野';
 }
 updateFields();
 
+document.getElementById('field').addEventListener('change', function(){
+  currentField = this.value;
+});
+
 async function callWorker(prompt){
-  const url = getWorkerUrl();
-  if(!url) throw new Error('Worker URLを入力してください');
-  const res = await fetch(url, {
+  const res = await fetch(WORKER_URL, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({prompt})
@@ -231,33 +425,42 @@ async function callWorker(prompt){
   return data.text;
 }
 
-function setLoading(btnId, loading, label){
-  const btn = document.getElementById(btnId);
+function setBtn(id, loading, label){
+  const btn = document.getElementById(id);
+  if(!btn) return;
   btn.disabled = loading;
-  btn.innerHTML = loading ? '<span class="loading"></span> ' + label : label;
+  btn.innerHTML = loading ? `<span class="loading"></span> ${label}` : label;
 }
 
 async function generateQuestion(){
-  const subj = document.getElementById('subject');
-  const subjVal = subj.value;
-  const subjName = SUBJECT_NAMES[subjVal];
+  const subjName = SUBJECT_NAMES[currentSubj];
   const field = document.getElementById('field').value;
-  const qbox = document.getElementById('question-display');
+  currentField = field;
 
-  setLoading('gen-btn', true, '生成中...');
-  qbox.className = 'question-box';
+  setBtn('gen-btn', true, '生成中...');
+  const qbox = document.getElementById('question-display');
+  qbox.className = 'question-wrap';
   qbox.textContent = '問題を生成しています...';
   document.getElementById('feedback-drill').classList.add('hidden');
+  document.getElementById('score-display').classList.add('hidden');
   document.getElementById('answer-input').value = '';
+  document.getElementById('q-meta').style.display = 'none';
 
-  const prompt = `あなたは${LEVEL_DESC}の入試問題作成の専門家です。
+  const isMarkStyle = currentLevel === 'C';
+  const isBunKei = currentLevel === 'A';
+  const prompt = `あなたは${getLevelDesc()}の入試問題作成の専門家です。
 
 条件：
 - 科目：${subjName}
 - 分野：${field}
-- 難易度：${LEVEL_DESC}の本番入試レベル
-- 形式：記述式
-- 問題文のみ出力（解答・解説・前置きは不要）
+- 難易度：${getLevelDesc()}の本番入試レベル
+- 形式：${isMarkStyle ? 'マーク式（選択肢4つ付き）＋一部記述' : '記述式'}
+${isBunKei ? '- 文系科目（英語・国語・社会・数学IA）を中心とした出題にすること' : ''}
+- 問題文のみを出力すること
+- 解答・解説・前置き・ラベルは一切不要
+- Markdownや装飾記号は使わない
+- 数式は通常テキストで記述
+${isMarkStyle ? '- 選択肢は(1)〜(4)の形式で付けること' : ''}
 
 問題文のみ出力してください。`;
 
@@ -265,12 +468,21 @@ async function generateQuestion(){
     const text = await callWorker(prompt);
     currentQuestion = text;
     qbox.textContent = text;
-    recordHistory(subjVal, field, null);
+    document.getElementById('q-subject-badge').textContent = subjName + (field !== '全分野' ? ' › ' + field : '');
+    document.getElementById('q-meta').style.display = 'flex';
+    recordHistory(currentSubj, field, null);
+
+    // 数学の場合は補助図形を生成
+    if(currentSubj === 'math'){
+      generateFigure(text);
+    } else {
+      document.getElementById('svg-figure').classList.add('hidden');
+    }
   } catch(e){
-    qbox.className = 'question-box empty';
+    qbox.className = 'question-wrap empty';
     qbox.textContent = 'エラー: ' + e.message;
   } finally {
-    setLoading('gen-btn', false, '次の問題');
+    setBtn('gen-btn', false, '✦ 次の問題');
   }
 }
 
@@ -278,55 +490,83 @@ async function scoreAnswer(){
   if(!currentQuestion){alert('まず問題を生成してください');return;}
   const ans = document.getElementById('answer-input').value.trim();
   if(!ans){alert('解答を入力してください');return;}
-  const subjVal = document.getElementById('subject').value;
-  const subjName = SUBJECT_NAMES[subjVal];
-  const field = document.getElementById('field').value;
+  const subjName = SUBJECT_NAMES[currentSubj];
 
-  setLoading('score-btn', true, '採点中...');
+  setBtn('score-btn', true, '採点中...');
   const fb = document.getElementById('feedback-drill');
   fb.className = 'feedback ok';
-  fb.textContent = '採点しています...';
+  fb.textContent = '採点・添削しています...';
   fb.classList.remove('hidden');
+  document.getElementById('score-display').classList.add('hidden');
 
-  const prompt = `あなたは${LEVEL_DESC}の採点官です。
+  const prompt = `あなたは${getLevelDesc()}の採点・添削専門家です。
+
+【科目】${subjName}（${currentField}）
 
 【問題】
 ${currentQuestion}
 
-【解答】
+【受験生の解答】
 ${ans}
 
-以下の形式で採点してください：
-◎ 評価（A〜D）と得点（/10点）
-◎ 良かった点
-◎ 改善すべき点
-◎ 模範解答のポイント
-◎ 次に重点的に学ぶべきこと
+以下の形式で採点・添削してください。Markdownや装飾記号は使わず、プレーンテキストで出力してください：
 
-${LEVEL_DESC}基準で厳しく評価してください。`;
+【総合評価】A / B / C / D のいずれか1文字と、10点満点での得点
+
+【良かった点】
+具体的に記述
+
+【改善すべき点】
+具体的に記述
+
+【模範解答のポイント】
+要点を箇条書き
+
+【次のステップ】
+重点的に学ぶべきこと
+
+${getLevelDesc()}基準で、厳しくかつ建設的に評価してください。`;
 
   try{
     const text = await callWorker(prompt);
     fb.textContent = text;
-    const grade = text.match(/評価[：:]\s*([A-D])/)?.[1];
+
+    const grade = text.match(/【総合評価】\s*([A-D])/)?.[1] || text.match(/評価[：:]\s*([A-D])/)?.[1];
     const score = grade ? {A:90,B:70,C:50,D:30}[grade] : 60;
-    recordHistory(subjVal, field, score);
-    updateAnalysis();
+    const gradeColor = {A:'var(--green)',B:'var(--blue)',C:'var(--amber)',D:'var(--red)'}[grade] || 'var(--blue)';
+    const gradeMsg = {A:'素晴らしい！',B:'良好です',C:'もう一息',D:'要復習'}[grade] || '';
+
+    if(grade){
+      const sd = document.getElementById('score-display');
+      sd.innerHTML = `<div class="score-display">
+        <div class="score-grade" style="color:${gradeColor}">${grade}</div>
+        <div class="score-info">
+          <div class="score-title">${gradeMsg} （${score}/100点換算）</div>
+          <div class="score-sub">${subjName} › ${currentField}</div>
+        </div>
+      </div>`;
+      sd.classList.remove('hidden');
+    }
+
+    recordHistory(currentSubj, currentField, score);
+    updateHeaderStats();
+    document.getElementById('question-corner').classList.remove('hidden');
+setLevel(currentLevel);
   } catch(e){
     fb.className = 'feedback err';
     fb.textContent = 'エラー: ' + e.message;
   } finally {
-    setLoading('score-btn', false, '採点する');
+    setBtn('score-btn', false, '採点・添削する →');
   }
 }
 
 async function showHint(){
   if(!currentQuestion){alert('まず問題を生成してください');return;}
   const fb = document.getElementById('feedback-drill');
-  fb.className = 'feedback ok';
+  fb.className = 'feedback hint';
   fb.textContent = 'ヒントを生成中...';
   fb.classList.remove('hidden');
-  const prompt = `次の問題のヒントを、答えを言わずに3点だけ挙げてください。\n\n${currentQuestion}`;
+  const prompt = `次の問題のヒントを、答えを言わずに3点だけ挙げてください。Markdownや記号は使わずプレーンテキストで。\n\n${currentQuestion}`;
   try{
     fb.textContent = await callWorker(prompt);
   } catch(e){
@@ -335,100 +575,201 @@ async function showHint(){
   }
 }
 
-async function scoreEssay(){
-  const ans = document.getElementById('essay-input').value.trim();
-  if(!ans){alert('解答を入力してください');return;}
-  const subjEl = document.getElementById('essay-subject');
-  const subjName = subjEl.options[subjEl.selectedIndex].text;
-  const topic = document.getElementById('essay-topic').value.trim();
-
-  setLoading('essay-btn', true, '添削中...');
-  const fb = document.getElementById('feedback-essay');
+async function showModel(){
+  if(!currentQuestion){alert('まず問題を生成してください');return;}
+  const fb = document.getElementById('feedback-drill');
   fb.className = 'feedback ok';
-  fb.textContent = '添削しています...';
+  fb.textContent = '模範解答を生成中...';
   fb.classList.remove('hidden');
-
-  const prompt = `あなたは${LEVEL_DESC}の記述添削専門家です。
-
-科目：${subjName}${topic ? '\n問題概要：' + topic : ''}
-
-【解答】
-${ans}
-
-以下の観点で添削してください：
-1. 総合評価（S/A/B/C/D）と理由
-2. 構成・論理の評価
-3. 内容・正確さの評価
-4. 表現・記述の評価
-5. 具体的な改善点
-6. ${LEVEL_DESC}で求められる解答との差
-
-厳しく、かつ建設的に添削してください。`;
-
+  const prompt = `次の問題の模範解答と解説を、${getLevelDesc()}基準で示してください。Markdownや記号は使わずプレーンテキストで。\n\n${currentQuestion}`;
   try{
     fb.textContent = await callWorker(prompt);
   } catch(e){
     fb.className = 'feedback err';
     fb.textContent = 'エラー: ' + e.message;
-  } finally {
-    setLoading('essay-btn', false, 'AIに添削を依頼');
   }
 }
 
 function recordHistory(subjVal, field, score){
   const today = new Date().toDateString();
   const key = subjVal + '|' + field;
-  if(!history[key]) history[key] = {subjVal, field, scores:[], dates:[]};
-  if(score !== null) history[key].scores.push(score);
+  if(!history[key]) history[key] = {subjVal, field, scores:[], dates:[], count:0};
+  if(score !== null){history[key].scores.push(score); history[key].count++;}
   if(!history[key].dates.includes(today)) history[key].dates.push(today);
-  localStorage.setItem('examHistory_v2', JSON.stringify(history));
+  localStorage.setItem('examHistory_v3', JSON.stringify(history));
+}
+
+function updateHeaderStats(){
+  history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
+  let total = 0, sumScore = 0, countScore = 0;
+  const allDates = new Set();
+  for(const d of Object.values(history)){
+    d.dates.forEach(dt => allDates.add(dt));
+    total += d.scores.length;
+    if(d.scores.length){
+      const avg = d.scores.reduce((a,b)=>a+b,0)/d.scores.length;
+      sumScore += avg; countScore++;
+    }
+  }
+  document.getElementById('h-total').textContent = total;
+  document.getElementById('h-days').textContent = allDates.size;
+  document.getElementById('h-avg').textContent = countScore ? Math.round(sumScore/countScore)+'%' : '—';
 }
 
 function updateAnalysis(){
-  history = JSON.parse(localStorage.getItem('examHistory_v2') || '{}');
+  history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
   let total = 0, sumScore = 0, countScore = 0;
   const allDates = new Set();
-  const subjMap = {};
+  const items = [];
+  const subjCount = {};
 
   for(const [key, d] of Object.entries(history)){
     d.dates.forEach(dt => allDates.add(dt));
     total += d.scores.length;
     const avg = d.scores.length ? Math.round(d.scores.reduce((a,b)=>a+b,0)/d.scores.length) : null;
-    if(avg !== null){ sumScore += avg; countScore++; }
-    const label = (SUBJECT_NAMES[d.subjVal] || d.subjVal) + (d.field !== '全分野' ? ' › ' + d.field : '');
-    subjMap[label] = {avg, count: d.scores.length};
+    if(avg !== null){sumScore += avg; countScore++;}
+    const label = (SUBJECT_NAMES[d.subjVal]||d.subjVal) + (d.field !== '全分野' ? ' › '+d.field : '');
+    items.push({label, avg, count: d.scores.length});
+    subjCount[SUBJECT_NAMES[d.subjVal]||d.subjVal] = (subjCount[SUBJECT_NAMES[d.subjVal]||d.subjVal]||0) + d.scores.length;
   }
 
+  // 連続日数計算
+  const dates = [...allDates].map(d=>new Date(d)).sort((a,b)=>b-a);
+  let streak = 0;
+  const today = new Date(); today.setHours(0,0,0,0);
+  for(let i=0;i<dates.length;i++){
+    const d = new Date(dates[i]); d.setHours(0,0,0,0);
+    const diff = Math.round((today - d)/(1000*60*60*24));
+    if(diff === i) streak++;
+    else break;
+  }
+
+  document.getElementById('streak-num').textContent = streak;
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-avg').textContent = countScore ? Math.round(sumScore/countScore)+'%' : '—';
   document.getElementById('stat-days').textContent = allDates.size;
 
+  // 弱点リスト
   const list = document.getElementById('weak-list');
-  const items = Object.entries(subjMap).sort((a,b)=>(a[1].avg??999)-(b[1].avg??999));
-
-  if(!items.length){
-    list.innerHTML = '<div style="color:var(--text-hint);font-size:13px;text-align:center;padding:20px">演習を積むと表示されます</div>';
-    return;
+  const sorted = items.filter(i=>i.count>0).sort((a,b)=>(a.avg??999)-(b.avg??999));
+  if(!sorted.length){
+    list.innerHTML = '<div style="color:var(--gray400);font-size:13px;text-align:center;padding:24px">演習を積むと苦手分野が表示されます</div>';
+  } else {
+    list.innerHTML = sorted.map(({label,avg,count},i)=>{
+      const pct = avg??0;
+      const cls = pct<45?'low':pct<70?'mid':'high';
+      const rankCls = i<3?'top':'';
+      return `<div class="weak-item">
+        <span class="weak-rank ${rankCls}">${i+1}</span>
+        <span class="weak-name">${label} <span style="font-size:11px;color:var(--gray400)">(${count}問)</span></span>
+        <div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
+        <span class="weak-pct">${avg!==null?avg+'%':'—'}</span>
+      </div>`;
+    }).join('');
   }
 
-  list.innerHTML = items.map(([label, {avg, count}])=>{
-    const pct = avg ?? 0;
-    const cls = pct < 45 ? 'low' : pct < 70 ? 'mid' : 'high';
-    return `<div class="weak-item">
-      <span class="weak-name">${label} <span style="font-size:11px;color:var(--text-hint)">(${count}問)</span></span>
-      <div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
-      <span class="weak-pct">${avg !== null ? avg+'%' : '—'}</span>
-    </div>`;
-  }).join('');
+  // 科目別棒グラフ
+  const chartEl = document.getElementById('subject-chart');
+  const maxCount = Math.max(...Object.values(subjCount), 1);
+  if(!Object.keys(subjCount).length){
+    chartEl.innerHTML = '<div style="color:var(--gray400);font-size:13px;text-align:center;padding:16px">データがありません</div>';
+  } else {
+    chartEl.innerHTML = Object.entries(subjCount).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--gray600);width:60px;flex-shrink:0;text-align:right">${s}</span>
+        <div style="flex:1;height:8px;background:var(--gray200);border-radius:4px;overflow:hidden">
+          <div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--indigo));width:${Math.round(c/maxCount*100)}%"></div>
+        </div>
+        <span style="font-size:12px;color:var(--gray600);width:24px">${c}</span>
+      </div>`).join('');
+  }
+
+  updateHeaderStats();
+}
+
+async function generateFigure(questionText){
+  const figEl = document.getElementById('svg-figure');
+  const svgEl = document.getElementById('svg-content');
+  figEl.classList.remove('hidden');
+  svgEl.innerHTML = '<div style="color:var(--gray400);font-size:13px;padding:8px">図形を生成中...</div>';
+
+  const prompt = `次の数学の問題に補助図形が必要か判断し、必要な場合のみSVGコードを出力してください。
+
+【問題】
+${questionText}
+
+ルール：
+- 図形が問題理解に役立つ場合のみSVGを出力する
+- 図形不要な場合は「NOFIGURE」とだけ出力する
+- SVGのみ出力（説明文・コードブロック記号不要）
+- サイズは width="400" height="300" に固定
+- 座標軸は薄いグレー(#ccc)で描く
+- 図形は青(#2563EB)か黒(#333)で描く
+- ラベル・数値はfont-size="14"で読みやすく
+- 余白を十分とりシンプルに描く
+- 不正確でも概念が伝わればよい`;
+
+  try{
+    const text = await callWorker(prompt);
+    if(text.trim() === 'NOFIGURE' || !text.includes('<svg')){
+      figEl.classList.add('hidden');
+      return;
+    }
+    // SVGタグだけ抽出
+    const match = text.match(/<svg[\s\S]*<\/svg>/i);
+    if(match){
+      svgEl.innerHTML = match[0];
+      figEl.classList.remove('hidden');
+    } else {
+      figEl.classList.add('hidden');
+    }
+  } catch(e){
+    figEl.classList.add('hidden');
+  }
+}
+
+async function askQuestion(){
+  if(!currentQuestion){alert('まず問題を生成してください');return;}
+  const q = document.getElementById('question-input').value.trim();
+  if(!q){alert('質問を入力してください');return;}
+
+  const btn = document.getElementById('ask-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> 回答中...';
+
+  const fb = document.getElementById('feedback-question');
+  fb.className = 'feedback hint';
+  fb.textContent = '回答を生成しています...';
+  fb.classList.remove('hidden');
+
+  const prompt = `あなたは${getLevelDesc()}の受験指導専門家です。
+
+【問題】
+${currentQuestion}
+
+【生徒からの質問】
+${q}
+
+この質問に対して、丁寧にわかりやすく説明してください。
+- 考え方の糸口から順序立てて説明する
+- ${getLevelDesc()}レベルに合った解説をする
+- Markdownや装飾記号は使わずプレーンテキストで出力する`;
+
+  try{
+    const text = await callWorker(prompt);
+    fb.textContent = text;
+  } catch(e){
+    fb.className = 'feedback err';
+    fb.textContent = 'エラー: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '質問する →';
+  }
 }
 
 function exportJSON(){
-  const data = {
-    exportDate: new Date().toISOString(),
-    level: 'A',
-    history
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const data = {exportDate:new Date().toISOString(), level:'A', history};
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `exam-history-${new Date().toISOString().slice(0,10)}.json`;
@@ -437,24 +778,25 @@ function exportJSON(){
 
 function clearHistory(){
   if(confirm('学習履歴をすべて削除しますか？')){
-    localStorage.removeItem('examHistory_v2');
+    localStorage.removeItem('examHistory_v3');
     history = {};
     updateAnalysis();
   }
 }
 
 function switchTab(name){
-  ['drill','essay','analysis'].forEach((t,i)=>{
-    document.getElementById('tab-'+t).classList.toggle('hidden', t!==name);
-    document.querySelectorAll('.tab')[i].classList.toggle('active', t===name);
+  ['drill','analysis'].forEach((t,i)=>{
+    document.getElementById('tab-'+t).classList.toggle('hidden',t!==name);
+    document.querySelectorAll('.tab')[i].classList.toggle('active',t===name);
   });
   if(name==='analysis') updateAnalysis();
 }
 
-// PWA登録
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
+
+updateHeaderStats();
 </script>
 </body>
 </html>
