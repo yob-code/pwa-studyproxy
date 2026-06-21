@@ -26,12 +26,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .logo-icon{width:32px;height:32px;background:var(--purple);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
 .logo-text{font-size:15px;font-weight:600}
 .level-badge{padding:4px 10px;background:var(--amber-light);color:var(--amber);border-radius:20px;font-size:12px;font-weight:600}
-.worker-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.worker-input{padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;width:220px;color:var(--text);background:var(--white)}
-.worker-input:focus{outline:none;border-color:var(--purple)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0}
-.status-dot.ok{background:var(--teal)}
-.btn-save{padding:5px 10px;border-radius:var(--radius-sm);font-size:12px;background:var(--purple);color:#fff;border:none;cursor:pointer}
 
 .tabs{display:flex;gap:3px;margin-bottom:12px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:4px}
 .tab{flex:1;padding:8px 4px;text-align:center;font-size:13px;font-weight:500;border-radius:7px;cursor:pointer;color:var(--text-sec);transition:all 0.15s}
@@ -93,11 +87,7 @@ input[type=text]:focus{outline:none;border-color:var(--purple)}
       <div class="logo-icon">📚</div>
       <span class="logo-text">受験AI</span>
       <span class="level-badge">レベル A｜難関国立</span>
-    </div>
-    <div class="worker-row">
-      <div class="status-dot" id="status-dot"></div>
-      <input class="worker-input" type="text" id="worker-url" placeholder="Worker URL を入力" oninput="saveWorkerUrl()">
-    </div>
+    </div></div>
   </div>
 
   <div class="tabs">
@@ -213,23 +203,12 @@ let currentQuestion = '';
 let history = JSON.parse(localStorage.getItem('examHistory_v2') || '{}');
 
 // Worker URL
-const savedUrl = localStorage.getItem('workerUrl') || '';
-document.getElementById('worker-url').value = savedUrl;
-updateStatusDot();
+const savedUrl = "https://study-proxy-morning-silence-f64f.ksey-fgljfsmg7475219t.workers.dev";
 
-function saveWorkerUrl(){
-  const url = document.getElementById('worker-url').value.trim();
-  localStorage.setItem('workerUrl', url);
-  updateStatusDot();
-}
 
-function updateStatusDot(){
-  const url = document.getElementById('worker-url').value.trim();
-  document.getElementById('status-dot').className = 'status-dot' + (url.startsWith('https://') ? ' ok' : '');
-}
 
 function getWorkerUrl(){
-  return document.getElementById('worker-url').value.trim();
+  return savedUrl;
 }
 
 function updateFields(){
