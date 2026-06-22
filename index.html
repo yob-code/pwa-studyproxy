@@ -195,18 +195,7 @@ textarea::placeholder{color:var(--gray400)}
     <div class="card">
       <div class="card-title">📌 科目・分野を選択</div>
       <div class="select-grid">
-        <select id="subject" onchange="updateFields()">
-          <option value="math">数学</option>
-          <option value="english">英語</option>
-          <option value="japanese">現代文</option>
-          <option value="classical">古文・漢文</option>
-          <option value="physics">物理</option>
-          <option value="chemistry">化学</option>
-          <option value="biology">生物</option>
-          <option value="jphistory">日本史</option>
-          <option value="world">世界史</option>
-          <option value="geo">地理</option>
-        </select>
+        <select id="subject" onchange="updateFields()"></select>
         <select id="field"></select>
         <button class="btn btn-primary" id="gen-btn" onclick="generateQuestion()">
           ✦ 問題を生成
@@ -385,40 +374,72 @@ function setLevel(lv){
   document.getElementById('score-display').classList.add('hidden');
   document.getElementById('answer-input').value = '';
   document.getElementById('svg-figure').classList.add('hidden');
+  // 科目リストを更新
+  updateSubjectSelect();
 }
 
 function getLevelDesc(){ return LEVELS[currentLevel].prompt; }
 
-const FIELDS = {
-  math:['全分野','極限・微積分','数列・確率','ベクトル・空間図形','整数・場合の数','複素数・二次曲線'],
-  english:['全分野','長文読解','英作文（自由）','英作文（和文英訳）','文法・語法'],
-  japanese:['全分野','評論文読解','小説読解','要約・論述'],
-  classical:['全分野','古文読解','漢文読解','古文文法'],
-  physics:['全分野','力学','電磁気','波動','熱力学','原子'],
-  chemistry:['全分野','理論化学','有機化学','無機化学'],
-  biology:['全分野','細胞・遺伝','生態・進化','動物生理','植物生理'],
-  jphistory:['全分野','原始・古代','中世','近世','近代','現代'],
-  world:['全分野','古代・中世','近世','近代（19c）','現代（20c）'],
-  geo:['全分野','地形・気候','産業・資源','地誌'],
+// レベル別科目定義
+const LEVEL_SUBJECTS = {
+  A: [
+    { value:'eng_essay', label:'英語（英作文）',       fields:['全分野','自由英作文','和文英訳','条件英作文','要約英作文'] },
+    { value:'jpn_mod',   label:'国語（現代文）',       fields:['全分野','評論文読解','小説読解','要約・論述'] },
+    { value:'jpn_cls',   label:'国語（古文）',         fields:['全分野','文法・助動詞','読解','和歌・韻文'] },
+    { value:'jpn_kan',   label:'国語（漢文）',         fields:['全分野','句法','読解','書き下し文'] },
+    { value:'world',     label:'世界史',               fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史'] },
+  ],
+  C: [
+    { value:'eng_read',  label:'英語（リーディング）', fields:['全分野','長文読解','文法・語法','語彙・熟語','要約問題'] },
+    { value:'eng_listen',label:'英語（リスニング）',   fields:['全分野','会話文','説明文・講義','図表読み取り'] },
+    { value:'jpn_mod',   label:'国語（現代文）',       fields:['全分野','評論文読解','小説読解','実用文'] },
+    { value:'jpn_cls',   label:'国語（古文）',         fields:['全分野','文法・助動詞','読解','和歌'] },
+    { value:'jpn_kan',   label:'国語（漢文）',         fields:['全分野','句法','読解','書き下し文'] },
+    { value:'math1a',    label:'数学ⅠA',              fields:['全分野','数と式','二次関数','図形と計量','データの分析','場合の数・確率'] },
+    { value:'math2bc',   label:'数学ⅡBC',             fields:['全分野','指数・対数','三角関数','微積分','数列','ベクトル','複素数平面'] },
+    { value:'world_c',   label:'世界史',               fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史'] },
+    { value:'politics',  label:'公共・政治・経済',     fields:['全分野','公共・倫理','政治（日本・国際）','経済（ミクロ・マクロ）','時事問題'] },
+    { value:'bio_basic', label:'生物基礎',             fields:['全分野','細胞と生命','遺伝情報','体内環境','生態系'] },
+    { value:'earth',     label:'地学基礎',             fields:['全分野','地球の構造','大気・海洋','天体','地球の歴史'] },
+    { value:'info1',     label:'情報Ⅰ',               fields:['全分野','情報社会','アルゴリズム','ネットワーク','データ活用'] },
+  ],
 };
-const SUBJECT_NAMES = {
-  math:'数学',english:'英語',japanese:'現代文',classical:'古文・漢文',
-  physics:'物理',chemistry:'化学',biology:'生物',
-  jphistory:'日本史',world:'世界史',geo:'地理'
-};
+
+// 現在のレベルに応じた科目リストを返す
+function getSubjects(){ return LEVEL_SUBJECTS[currentLevel] || LEVEL_SUBJECTS['A']; }
+function getSubjectLabel(val){ 
+  const s = getSubjects().find(s=>s.value===val);
+  return s ? s.label : val;
+}
+function getSubjectFields(val){
+  const s = getSubjects().find(s=>s.value===val);
+  return s ? s.fields : ['全分野'];
+}
+
+// 後方互換用（レーダーチャートなど）
+const SUBJECT_NAMES = {};
+const FIELDS = {};
 
 let currentQuestion = '';
 let currentSubj = 'math';
 let currentField = '全分野';
 let history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
 
+function updateSubjectSelect(){
+  const sel = document.getElementById('subject');
+  const subjects = getSubjects();
+  sel.innerHTML = subjects.map(s=>`<option value="${s.value}">${s.label}</option>`).join('');
+  currentSubj = subjects[0].value;
+  updateFields();
+}
+
 function updateFields(){
   currentSubj = document.getElementById('subject').value;
   const f = document.getElementById('field');
-  f.innerHTML = (FIELDS[currentSubj]||['全分野']).map(v=>`<option>${v}</option>`).join('');
+  f.innerHTML = getSubjectFields(currentSubj).map(v=>`<option>${v}</option>`).join('');
   currentField = '全分野';
 }
-updateFields();
+updateSubjectSelect();
 
 document.getElementById('field').addEventListener('change', function(){
   currentField = this.value;
@@ -443,7 +464,7 @@ function setBtn(id, loading, label){
 }
 
 async function generateQuestion(){
-  const subjName = SUBJECT_NAMES[currentSubj];
+  const subjName = getSubjectLabel(currentSubj);
   const field = document.getElementById('field').value;
   currentField = field;
 
@@ -483,7 +504,7 @@ ${isMarkStyle ? '- 選択肢は(1)〜(4)の形式で付けること' : ''}
     recordHistory(currentSubj, field, null);
 
     // 数学の場合は補助図形を生成
-    if(currentSubj === 'math'){
+    if(currentSubj === 'math1a' || currentSubj === 'math2bc' || currentSubj === 'math1a' || currentSubj === 'math2bc'){
       generateFigure(text);
     } else {
       document.getElementById('svg-figure').classList.add('hidden');
@@ -500,7 +521,7 @@ async function scoreAnswer(){
   if(!currentQuestion){alert('まず問題を生成してください');return;}
   const ans = document.getElementById('answer-input').value.trim();
   if(!ans){alert('解答を入力してください');return;}
-  const subjName = SUBJECT_NAMES[currentSubj];
+  const subjName = getSubjectLabel(currentSubj);
 
   setBtn('score-btn', true, '採点中...');
   const fb = document.getElementById('feedback-drill');
