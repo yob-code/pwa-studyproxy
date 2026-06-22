@@ -2,10 +2,11 @@
   "name": "受験AI - 難関大学対策",
   "short_name": "受験AI",
   "description": "難関国立大学受験対策AIアプリ",
-  "start_url": "/",
+  "start_url": "/pwa-studyproxy/",
+  "scope": "/pwa-studyproxy/",
   "display": "standalone",
   "background_color": "#f8f7f4",
-  "theme_color": "#534AB7",
+  "theme_color": "#2563EB",
   "orientation": "portrait-primary",
   "icons": [
     {

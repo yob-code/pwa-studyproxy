@@ -1,8 +1,11 @@
-const CACHE_NAME = 'exam-ai-v1';
+const CACHE_NAME = 'exam-ai-v2';
+const BASE = '/pwa-studyproxy';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/manifest.json',
+  BASE + '/icon-192.png',
+  BASE + '/icon-512.png',
 ];
 
 self.addEventListener('install', e => {
@@ -22,7 +25,6 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // API通信はキャッシュしない
   if (e.request.url.includes('workers.dev') || e.request.url.includes('googleapis.com')) {
     return;
   }
