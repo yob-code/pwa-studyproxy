@@ -446,12 +446,10 @@ const LEVEL_SUBJECTS = {
     {value:'eng_essay', label:'英語（英作文）',    fields:['全分野','自由英作文','和文英訳','条件英作文','要約英作文']},
     {value:'jpn_mod',   label:'国語（現代文）',    fields:['全分野','評論文読解','小説読解','要約・論述']},
     {value:'jpn_cls',   label:'国語（古文）',      fields:['全分野','文法・助動詞','読解','和歌・韻文']},
-    {value:'jpn_kan',   label:'国語（漢文）',      fields:['全分野','句法','読解','書き下し文']},
     {value:'world',     label:'世界史',            fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史']},
   ],
   C:[
     {value:'eng_read',  label:'英語（リーディング）',fields:['全分野','長文読解','文法・語法','語彙・熟語','要約問題']},
-    {value:'eng_listen',label:'英語（リスニング）',  fields:['全分野','会話文','説明文・講義','図表読み取り']},
     {value:'jpn_mod',   label:'国語（現代文）',      fields:['全分野','評論文読解','小説読解','実用文']},
     {value:'jpn_cls',   label:'国語（古文）',        fields:['全分野','文法・助動詞','読解','和歌']},
     {value:'jpn_kan',   label:'国語（漢文）',        fields:['全分野','句法','読解','書き下し文']},
@@ -559,20 +557,36 @@ async function generateQuestion(){
   qbox.className='question-box';
   qbox.textContent='問題を生成しています...';
 
-  const prompt=`あなたは${getLevelDesc()}の入試問題作成の専門家です。
+  const centerPrompt = currentLevel === 'C' ? `
+共通テスト形式の問題を1問作成してください。以下の形式に従ってください：
+
+【科目】${subjName}（${field}）
+
+出題形式のルール：
+- 実際の共通テスト・センター試験に忠実な形式にすること
+- 「第○問」から始める大問形式
+- リード文や会話文・資料などを使った問題設定
+- 設問はア・イ・ウ・エなどカタカナで番号付け（例：アは何か）
+- 各設問に選択肢(1)〜(4)を付ける（選択肢は4つのみ）
+- 設問数は2〜4問程度
+- Markdownや装飾記号は使わない
+- 問題文のみ出力（解答・解説不要）
+- 数式は通常テキストで記述
+
+問題文のみ出力してください。` : `あなたは${getLevelDesc()}の入試問題作成の専門家です。
 
 条件：
 - 科目：${subjName}
 - 分野：${field}
 - 難易度：${getLevelDesc()}の本番入試レベル
-- 形式：${isMarkStyle?'マーク式（選択肢4つ付き）':'記述式'}
+- 形式：記述式
+- 文系学部向けの内容にすること
 - 問題文のみ出力（解答・解説・前置き不要）
 - Markdownや装飾記号は使わない
 - 数式は通常テキストで記述
-${isBunKei?'- 文系学部向けの内容にすること':''}
-${isMarkStyle?'- 選択肢は(1)〜(4)の形式で付けること':''}
 
 問題文のみ出力してください。`;
+  const prompt = centerPrompt;
 
   try{
     const text=await callWorker(prompt);
@@ -591,7 +605,10 @@ ${isMarkStyle?'- 選択肢は(1)〜(4)の形式で付けること':''}
       document.getElementById('answer-text-area').classList.remove('hidden');
       document.getElementById('answer-mark-area').classList.add('hidden');
     }
-    if(isMath) generateFigure(text);
+    if(isMath){
+      // 少し遅延させて問題表示後に図形生成
+      setTimeout(()=>generateFigure(text), 500);
+    }
   } catch(e){
     qbox.className='question-box empty';
     qbox.textContent='エラー: '+e.message;
@@ -708,16 +725,33 @@ async function generateFigure(questionText){
 function buildMarkSheet(questionText){
   const sheet=document.getElementById('mark-sheet');
   sheet.innerHTML='';
-  const kanaItems=[...new Set(questionText.match(/[アイウエオカキクケコ]/g)||[])];
-  const choiceNums=questionText.match(/\((\d+)\)/g)||[];
-  const maxChoice=choiceNums.length>0?Math.min(8,Math.max(...choiceNums.map(s=>parseInt(s.replace(/[()]/g,''))).filter(n=>n>=1))):4;
-  const items=kanaItems.length>0?kanaItems:['問1','問2','問3'];
+
+  // 設問のカタカナを順序通り重複なしで抽出（ア行のみ）
+  const kanaOrder = ['ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ'];
+  const found = [];
+  // 「アは」「イは」「ウは」のような設問パターンを検出
+  const pattern = /([アイウエオカキクケコ])は/g;
+  let m;
+  while((m=pattern.exec(questionText))!==null){
+    if(!found.includes(m[1])) found.push(m[1]);
+  }
+  // パターンで見つからない場合は出現順で抽出
+  if(found.length===0){
+    for(const k of kanaOrder){
+      if(questionText.includes(k) && !found.includes(k)) found.push(k);
+      if(found.length>=5) break;
+    }
+  }
+  const items = found.length>0 ? found : ['問1','問2','問3'];
+
+  // 選択肢数は常に4つ固定
+  const maxChoice = 4;
+
   items.forEach(item=>{
     const row=document.createElement('div');
     row.className='mark-row';
     const optsDiv=document.createElement('div');
     optsDiv.className='mark-options';
-    optsDiv.id='opts-'+item;
     row.innerHTML=`<span class="mark-qnum">${item}</span>`;
     row.appendChild(optsDiv);
     sheet.appendChild(row);
