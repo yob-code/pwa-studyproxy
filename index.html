@@ -3,142 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#2563EB">
+<meta name="theme-color" content="#0F172A">
 <link rel="manifest" href="manifest.json">
 <title>受験AI</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#1D4ED8;--blue-light:#EFF6FF;--blue-dark:#1E40AF;
-  --indigo:#3730A3;--indigo-light:#EEF2FF;
-  --green:#15803D;--green-light:#F0FDF4;
-  --red:#B91C1C;--red-light:#FEF2F2;
-  --amber:#B45309;--amber-light:#FFFBEB;
-  --gray50:#F9FAFB;--gray100:#F3F4F6;--gray200:#E5E7EB;
-  --gray400:#6B7280;--gray600:#374151;--gray800:#1F2937;--gray900:#111827;
-  --white:#FFFFFF;
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.08);
-  --shadow:0 4px 16px rgba(0,0,0,0.10);
-  --radius:12px;--radius-sm:8px;--radius-xs:6px;
+  --blue:#3B82F6;--blue-dark:#1D4ED8;--blue-light:#EFF6FF;--blue-glow:rgba(59,130,246,0.15);
+  --indigo:#6366F1;--indigo-dark:#4338CA;
+  --cyan:#06B6D4;
+  --green:#10B981;--green-light:#ECFDF5;
+  --red:#EF4444;--red-light:#FEF2F2;
+  --amber:#F59E0B;--amber-light:#FFFBEB;
+  --navy:#0F172A;--navy2:#1E293B;--navy3:#334155;
+  --slate:#475569;--slate2:#64748B;--slate3:#94A3B8;
+  --border:#E2E8F0;--border2:#CBD5E1;
+  --bg:#F8FAFC;--white:#FFFFFF;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.06);
+  --shadow-md:0 4px 24px rgba(0,0,0,0.10);
+  --shadow-blue:0 4px 20px rgba(59,130,246,0.25);
+  --radius:14px;--radius-sm:10px;--radius-xs:7px;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;background:var(--gray50);color:var(--gray900);min-height:100vh;font-size:16px}
-
-.app{max-width:960px;margin:0 auto;padding:20px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;font-size:16px;-webkit-font-smoothing:antialiased;width:100%}
+.app{max-width:980px;margin:0 auto;padding:20px}
 
 /* ヘッダー */
-.header{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.header-brand{display:flex;align-items:center;gap:12px}
-.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--indigo));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
-.brand-name{font-size:17px;font-weight:700;color:var(--gray900);letter-spacing:-0.3px}
-.brand-sub{font-size:11px;color:var(--gray400);margin-top:1px}
-.header-stats{display:flex;gap:16px}
+.header{background:var(--navy);border-radius:var(--radius);padding:16px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.header-brand{display:flex;align-items:center;gap:14px}
+.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 12px rgba(59,130,246,0.4);flex-shrink:0}
+.brand-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.brand-sub{font-size:11px;color:var(--slate3);margin-top:2px;letter-spacing:0.05em}
+.header-right{display:flex;align-items:center;gap:20px}
+.header-stats{display:flex;gap:20px}
 .hstat{text-align:center}
-.hstat-val{font-size:18px;font-weight:700;color:var(--blue)}
-.hstat-lbl{font-size:10px;color:var(--gray400);letter-spacing:0.05em}
+.hstat-val{font-size:20px;font-weight:800;color:var(--blue)}
+.hstat-lbl{font-size:10px;color:var(--slate3);letter-spacing:0.08em;margin-top:1px}
+.level-switcher{display:flex;gap:4px;background:rgba(255,255,255,0.08);border-radius:10px;padding:4px}
+.lv-btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none;color:var(--slate3);background:transparent;transition:all 0.2s;letter-spacing:0.03em}
+.lv-btn.active{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:0 2px 10px rgba(59,130,246,0.4)}
+.lv-btn:hover:not(.active){color:#fff;background:rgba(255,255,255,0.1)}
+
+/* レベルバッジ */
+.level-info{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 16px;background:var(--white);border-radius:var(--radius-sm);box-shadow:var(--shadow);border-left:3px solid var(--blue)}
+.level-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.06em}
+.level-note{font-size:12px;color:var(--slate2)}
 
 /* タブ */
-.tabs{display:flex;gap:4px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:5px;margin-bottom:16px}
-.tab{flex:1;padding:12px 8px;text-align:center;font-size:15px;font-weight:600;border-radius:9px;cursor:pointer;color:var(--gray600);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.tab.active{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
-.tab:hover:not(.active){background:var(--gray100);color:var(--gray800)}
-.tab-icon{font-size:16px}
+.tabs{display:flex;gap:6px;margin-bottom:16px}
+.tab{flex:1;padding:13px 8px;text-align:center;font-size:14px;font-weight:600;border-radius:var(--radius-sm);cursor:pointer;color:var(--slate2);background:var(--white);box-shadow:var(--shadow);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px solid transparent}
+.tab.active{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:var(--shadow-blue);border-color:transparent}
+.tab:hover:not(.active){border-color:var(--blue);color:var(--blue)}
+.tab-icon{font-size:17px}
 
 /* カード */
-.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:20px;margin-bottom:14px}
-.card-title{font-size:14px;font-weight:700;color:var(--gray600);letter-spacing:0.05em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:14px;border:1px solid var(--border)}
+.card-title{font-size:12px;font-weight:700;color:var(--slate2);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* 科目選択 */
-.select-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-select{padding:10px 14px;border:1.5px solid var(--gray200);border-radius:var(--radius-sm);font-size:15px;font-weight:500;color:var(--gray900);background:var(--white);cursor:pointer;transition:border 0.15s}
-select:focus{outline:none;border-color:var(--blue)}
-select:hover{border-color:var(--gray400)}
+.config-area{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-weight:500;color:var(--navy);background:var(--white);cursor:pointer;transition:border 0.15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
 
 /* ボタン */
-.btn{padding:12px 22px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;letter-spacing:0.02em}
-.btn-primary{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.25)}
-.btn-primary:hover{box-shadow:0 4px 14px rgba(37,99,235,0.35);transform:translateY(-1px)}
+.btn{padding:11px 22px;border-radius:var(--radius-xs);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.18s;display:inline-flex;align-items:center;gap:7px;letter-spacing:0.02em;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;box-shadow:var(--shadow-blue)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(59,130,246,0.35)}
 .btn-primary:active{transform:translateY(0)}
-.btn-primary:disabled{background:var(--gray200);color:var(--gray400);box-shadow:none;transform:none;cursor:not-allowed}
-.btn-ghost{background:var(--gray100);color:var(--gray600);border:1.5px solid var(--gray200)}
-.btn-ghost:hover{background:var(--gray200)}
-.btn-green{background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;box-shadow:0 2px 8px rgba(22,163,74,0.25)}
-.btn-green:hover{box-shadow:0 4px 14px rgba(22,163,74,0.35);transform:translateY(-1px)}
-.btn-green:disabled{background:var(--gray200);color:var(--gray400);box-shadow:none;transform:none;cursor:not-allowed}
-.btn-sm{padding:6px 12px;font-size:12px}
-.lv-btn{background:var(--gray100);color:var(--gray600);border:1.5px solid var(--gray200)}
-.lv-btn.active{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(37,99,235,0.25)}
+.btn-primary:disabled{background:var(--border2);color:var(--slate3);box-shadow:none;transform:none;cursor:not-allowed}
+.btn-ghost{background:var(--bg);color:var(--slate);border:1.5px solid var(--border);font-size:13px}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.btn-ghost:disabled{opacity:0.5;cursor:not-allowed}
+.btn-green{background:linear-gradient(135deg,var(--green),#059669);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,0.25)}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(16,185,129,0.35)}
+.btn-green:disabled{background:var(--border2);color:var(--slate3);box-shadow:none;transform:none;cursor:not-allowed}
+.btn-sm{padding:7px 14px;font-size:12px}
 
 /* 問題表示 */
-.question-wrap{background:var(--blue-light);border:1.5px solid #BFDBFE;border-radius:var(--radius-sm);padding:20px;min-height:90px;font-size:16px;line-height:2.0;color:var(--gray900);white-space:pre-wrap;word-break:break-word}
-.question-wrap.empty{color:var(--gray400);display:flex;align-items:center;justify-content:center;min-height:100px;font-size:13px;font-style:italic}
-.question-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.q-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.05em}
-.q-badge.level{background:var(--amber-light);color:var(--amber)}
-.q-badge.subject{background:var(--indigo-light);color:var(--indigo)}
+.question-meta{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.q-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.05em}
+.q-badge.level{background:var(--navy);color:var(--blue)}
+.q-badge.subject{background:var(--blue-light);color:var(--blue-dark)}
+.question-box{background:linear-gradient(135deg,#EFF6FF,#F0F9FF);border:1.5px solid #BFDBFE;border-radius:var(--radius-sm);padding:20px;min-height:100px;font-size:15px;line-height:2.0;color:var(--navy);white-space:pre-wrap;word-break:break-word}
+.question-box.empty{color:var(--slate3);display:flex;align-items:center;justify-content:center;min-height:120px;font-size:13px;font-style:italic;flex-direction:column;gap:8px}
+.question-box.empty::before{content:'📝';font-size:28px;font-style:normal}
 
 /* 解答エリア */
-textarea{width:100%;padding:14px 16px;border:1.5px solid var(--gray200);border-radius:var(--radius-sm);font-size:16px;font-family:inherit;color:var(--gray900);resize:vertical;line-height:1.9;transition:border 0.15s;background:var(--white)}
-textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
-textarea::placeholder{color:var(--gray400)}
-
-/* アクション行 */
+textarea{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:inherit;color:var(--navy);resize:vertical;line-height:1.9;transition:all 0.15s;background:var(--white)}
+textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+textarea::placeholder{color:var(--slate3)}
+.field-label{font-size:12px;font-weight:700;color:var(--slate2);margin-bottom:8px;letter-spacing:0.06em;display:flex;align-items:center;gap:6px}
 .action-row{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
 
 /* フィードバック */
-.feedback{border-radius:var(--radius-sm);padding:18px;font-size:16px;line-height:2.0;white-space:pre-wrap;word-break:break-word;margin-top:14px;border:1.5px solid}
-.feedback.ok{background:var(--indigo-light);border-color:#C7D2FE;color:#312E81}
-.feedback.hint{background:var(--amber-light);border-color:#FDE68A;color:#92400E}
-.feedback.err{background:var(--red-light);border-color:#FECACA;color:#991B1B}
+.feedback{border-radius:var(--radius-sm);padding:18px;font-size:15px;line-height:2.0;white-space:pre-wrap;word-break:break-word;margin-top:14px;border:1.5px solid}
+.feedback.ok{background:linear-gradient(135deg,#EFF6FF,#EEF2FF);border-color:#C7D2FE;color:#1E1B4B}
+.feedback.hint{background:var(--amber-light);border-color:#FDE68A;color:#78350F}
+.feedback.err{background:var(--red-light);border-color:#FECACA;color:#7F1D1D}
+
+/* スコア表示 */
+.score-display{display:flex;align-items:center;gap:16px;padding:14px 18px;background:var(--green-light);border:1.5px solid #A7F3D0;border-radius:var(--radius-sm);margin-top:12px}
+.score-grade{font-size:36px;font-weight:900;line-height:1}
+.score-info{flex:1}
+.score-title{font-size:14px;font-weight:700;color:var(--navy)}
+.score-sub{font-size:12px;color:var(--slate2);margin-top:3px}
 
 /* 弱点分析 */
+.deviation-card{background:var(--navy);border-radius:var(--radius);padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
+.deviation-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(59,130,246,0.2),transparent);border-radius:50%}
+.deviation-card::after{content:'';position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(99,102,241,0.15),transparent);border-radius:50%}
+.dev-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1}
+.dev-label{font-size:11px;color:var(--slate3);letter-spacing:0.1em;margin-bottom:8px}
+.dev-value{font-size:60px;font-weight:900;color:#fff;line-height:1;letter-spacing:-2px}
+.dev-unit{font-size:16px;color:var(--slate3);margin-left:4px}
+.dev-message{font-size:13px;color:var(--blue);margin-top:8px;font-weight:600}
+.dev-target{text-align:right}
+.dev-target-num{font-size:28px;font-weight:800;color:var(--cyan)}
+.dev-target-lbl{font-size:10px;color:var(--slate3);margin-top:2px}
+.dev-bar-wrap{margin-top:18px;position:relative;z-index:1}
+.dev-bar-bg{height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden}
+.dev-bar-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width 0.8s cubic-bezier(.4,0,.2,1)}
+.dev-bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--slate3);margin-top:5px}
+
 .stat-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.stat-card{flex:1;min-width:90px;background:var(--white);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);padding:14px;text-align:center;border-top:3px solid var(--blue)}
-.stat-val{font-size:28px;font-weight:800;color:var(--gray900)}
-.stat-lbl{font-size:11px;color:var(--gray400);margin-top:3px;letter-spacing:0.05em}
+.stat-card{flex:1;min-width:90px;background:var(--white);border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:16px;text-align:center;border:1px solid var(--border);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.stat-val{font-size:28px;font-weight:800;color:var(--navy);margin-top:4px}
+.stat-lbl{font-size:11px;color:var(--slate2);margin-top:3px;letter-spacing:0.05em}
 
-.weak-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--gray50);border:1px solid var(--gray200);border-radius:var(--radius-sm);margin-bottom:8px}
-.weak-rank{width:20px;font-size:12px;font-weight:700;color:var(--gray400);text-align:center;flex-shrink:0}
-.weak-rank.top{color:var(--red)}
-.weak-name{flex:1;font-size:15px;font-weight:500;color:var(--gray900)}
-.bar-wrap{width:80px;height:6px;background:var(--gray200);border-radius:3px;overflow:hidden;flex-shrink:0}
+.streak-banner{background:linear-gradient(135deg,var(--indigo-dark),var(--blue-dark));border-radius:var(--radius);padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.streak-left{flex:1}
+.streak-title{font-size:15px;font-weight:700}
+.streak-sub{font-size:12px;opacity:0.7;margin-top:3px}
+.streak-right{text-align:right}
+.streak-num{font-size:42px;font-weight:900;line-height:1;color:#fff}
+.streak-day{font-size:11px;opacity:0.7;margin-top:2px}
+
+.weak-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;transition:border 0.15s}
+.weak-item:hover{border-color:var(--blue-dark)}
+.weak-rank{width:22px;font-size:12px;font-weight:800;color:var(--slate3);text-align:center;flex-shrink:0}
+.weak-rank.top1{color:#EF4444}.weak-rank.top2{color:#F59E0B}.weak-rank.top3{color:#3B82F6}
+.weak-name{flex:1;font-size:14px;font-weight:500;color:var(--navy)}
+.bar-wrap{width:90px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
 .bar-fill{height:6px;border-radius:3px;transition:width 0.5s}
-.bar-fill.low{background:var(--red)}
-.bar-fill.mid{background:var(--amber)}
-.bar-fill.high{background:var(--green)}
-.weak-pct{font-size:12px;font-weight:600;color:var(--gray600);width:32px;text-align:right;flex-shrink:0}
+.bar-fill.low{background:linear-gradient(90deg,#EF4444,#F87171)}
+.bar-fill.mid{background:linear-gradient(90deg,#F59E0B,#FCD34D)}
+.bar-fill.high{background:linear-gradient(90deg,var(--green),#34D399)}
+.weak-pct{font-size:13px;font-weight:700;color:var(--slate);width:34px;text-align:right;flex-shrink:0}
 
-/* ストリーク */
-.streak-banner{background:linear-gradient(135deg,var(--blue),var(--indigo));border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#fff}
-.streak-text{font-size:14px;font-weight:600}
-.streak-sub{font-size:12px;opacity:0.8;margin-top:2px}
-.streak-num{font-size:36px;font-weight:800;line-height:1}
-.streak-day{font-size:11px;opacity:0.8;text-align:right}
+/* マークシート */
+.mark-area{padding:4px 0}
+.mark-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.mark-row:last-child{border-bottom:none}
+.mark-qnum{font-size:14px;font-weight:700;color:var(--navy);width:50px;flex-shrink:0}
+.mark-options{display:flex;gap:10px;flex-wrap:wrap}
+.mark-btn{width:46px;height:46px;border-radius:50%;border:2px solid var(--border2);background:var(--white);font-size:15px;font-weight:700;color:var(--slate2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.mark-btn:hover{border-color:var(--blue);color:var(--blue);transform:scale(1.05)}
+.mark-btn.selected{background:linear-gradient(135deg,var(--blue),var(--indigo));border-color:transparent;color:#fff;box-shadow:0 3px 12px rgba(59,130,246,0.4);transform:scale(1.05)}
+
+/* SVG図形 */
+.figure-wrap{margin-top:14px;text-align:center;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:16px}
+.figure-label{font-size:11px;font-weight:700;color:var(--slate2);letter-spacing:0.1em;margin-bottom:10px}
+
+/* 質問コーナー */
+.question-corner{margin-top:16px;padding:16px;background:var(--amber-light);border:1.5px solid #FDE68A;border-radius:var(--radius-sm)}
+.corner-warning{font-size:12px;color:#92400E;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 
 /* ローディング */
-.loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+.loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* 進捗バー（採点後） */
-.score-display{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--green-light);border:1.5px solid #BBF7D0;border-radius:var(--radius-sm);margin-top:10px}
-.score-grade{font-size:28px;font-weight:800;color:var(--green)}
-.score-info{flex:1}
-.score-title{font-size:13px;font-weight:600;color:var(--gray800)}
-.score-sub{font-size:12px;color:var(--gray400);margin-top:2px}
-
 .hidden{display:none}
-@media(max-width:600px){
-  .header{flex-direction:column;align-items:flex-start}
-  .header-stats{gap:12px}
-  .select-grid{flex-direction:column;align-items:stretch}
-  .select-grid select,.select-grid button{width:100%}
+.divider{height:1px;background:var(--border);margin:14px 0}
+
+/* レスポンシブ */
+@media(max-width:768px){
+  .app{padding:12px}
+  .header{padding:12px 16px}
+  .brand-name{font-size:16px}
+  .hstat-val{font-size:17px}
+  .dev-value{font-size:48px}
+}
+@media(max-width:480px){
+  .app{padding:8px}
+  .header{flex-direction:column;align-items:stretch;gap:12px;padding:14px}
+  .header-right{flex-direction:row;justify-content:space-between;align-items:center}
+  .header-stats{gap:14px}
+  .tabs{gap:4px}
+  .tab{font-size:13px;padding:11px 4px;gap:5px}
+  .tab-icon{font-size:15px}
+  .card{padding:14px}
+  .config-area{flex-direction:column;align-items:stretch}
+  .config-area select,.config-area .btn{width:100%;justify-content:center}
   .action-row{flex-direction:column}
   .action-row .btn{width:100%;justify-content:center}
-  .btn-sm{font-size:13px;padding:8px 12px}
+  .stat-val{font-size:24px}
+  .dev-value{font-size:40px}
+  .streak-num{font-size:36px}
+  .mark-btn{width:42px;height:42px;font-size:14px}
+  .weak-name{font-size:13px}
+  .bar-wrap{width:60px}
 }
-.divider{height:1px;background:var(--gray200);margin:14px 0}
-
-/* 入力欄ラベル */
-.field-label{font-size:12px;font-weight:600;color:var(--gray600);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+@media(orientation:landscape){
+  .app{max-width:100%;padding:12px 20px}
+  .header{border-radius:10px;padding:10px 20px}
+  .card{padding:16px;margin-bottom:10px}
+  .tabs{margin-bottom:10px}
+}
+@media(max-height:500px) and (orientation:landscape){
+  .app{padding:6px 12px}
+  .header{padding:7px 14px;margin-bottom:8px;border-radius:8px}
+  .brand-name{font-size:15px}
+  .brand-sub{display:none}
+  .hstat-val{font-size:16px}
+  .hstat-lbl{font-size:9px}
+  .level-info{padding:6px 12px;margin-bottom:8px}
+  .tabs{margin-bottom:8px;gap:4px}
+  .tab{padding:8px 6px;font-size:12px}
+  .tab-icon{font-size:13px}
+  .card{padding:10px 14px;margin-bottom:8px;border-radius:10px}
+  .card-title{margin-bottom:8px;font-size:11px}
+  .question-box{min-height:50px;font-size:14px;padding:10px 14px}
+  textarea{min-height:70px;font-size:14px;padding:10px 12px}
+  .feedback{font-size:14px;padding:12px}
+  .action-row{margin-top:8px}
+  .btn{padding:8px 16px;font-size:13px}
+  .deviation-card{padding:14px 18px}
+  .dev-value{font-size:40px}
+  .streak-banner{padding:12px 16px}
+  .streak-num{font-size:32px}
+}
 </style>
 </head>
 <body>
@@ -150,19 +244,15 @@ textarea::placeholder{color:var(--gray400)}
       <div class="brand-icon">📚</div>
       <div>
         <div class="brand-name">受験AI</div>
-        <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
-          <span id="level-badge" style="background:var(--amber-light);color:var(--amber);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">レベル A</span>
-          <span id="level-note" style="font-size:11px;color:var(--gray400)">文系・記述式中心</span>
-        </div>
         <div class="brand-sub" id="brand-sub">難関国立文系 レベルA対策</div>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
-      <div style="display:flex;gap:6px">
-        <button class="lv-btn btn btn-sm active" data-lv="A" onclick="setLevel('A')">A 難関国立文系</button>
-        <button class="lv-btn btn btn-sm" data-lv="C" onclick="setLevel('C')">C 共通テスト</button>
+    <div class="header-right">
+      <div class="level-switcher">
+        <button class="lv-btn active" data-lv="A" onclick="setLevel('A')">A 難関国立文系</button>
+        <button class="lv-btn" data-lv="C" onclick="setLevel('C')">C 共通テスト</button>
       </div>
-      <div style="display:flex;gap:16px">
+      <div class="header-stats">
         <div class="hstat">
           <div class="hstat-val" id="h-total">0</div>
           <div class="hstat-lbl">演習数</div>
@@ -179,66 +269,64 @@ textarea::placeholder{color:var(--gray400)}
     </div>
   </div>
 
+  <!-- レベル情報 -->
+  <div class="level-info">
+    <span id="level-badge" class="level-badge" style="background:var(--navy);color:var(--blue)">レベル A</span>
+    <span id="level-note" class="level-note">文系・記述式中心｜英作文・国語・世界史</span>
+  </div>
+
   <!-- タブ -->
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('drill')">
-      <span class="tab-icon">✏️</span>問題演習
-    </div>
-    <div class="tab" onclick="switchTab('analysis')">
-      <span class="tab-icon">📊</span>弱点分析
-    </div>
+    <div class="tab active" onclick="switchTab('drill')"><span class="tab-icon">✏️</span>問題演習</div>
+    <div class="tab" onclick="switchTab('analysis')"><span class="tab-icon">📊</span>弱点分析</div>
   </div>
 
   <!-- 問題演習 -->
   <div id="tab-drill">
-    <!-- 科目選択 -->
     <div class="card">
-      <div class="card-title">📌 科目・分野を選択</div>
-      <div class="select-grid">
+      <div class="card-title">科目・分野</div>
+      <div class="config-area">
         <select id="subject" onchange="updateFields()"></select>
         <select id="field"></select>
-        <button class="btn btn-primary" id="gen-btn" onclick="generateQuestion()">
-          ✦ 問題を生成
-        </button>
+        <button class="btn btn-primary" id="gen-btn" onclick="generateQuestion()">✦ 問題を生成</button>
       </div>
     </div>
 
-    <!-- 問題表示 -->
     <div class="card">
       <div class="question-meta" id="q-meta" style="display:none">
-        <span class="q-badge level">レベル A</span>
+        <span class="q-badge level" id="q-level-badge">レベル A</span>
         <span class="q-badge subject" id="q-subject-badge"></span>
       </div>
-      <div class="card-title">📄 問題</div>
-      <div class="question-wrap empty" id="question-display">
-        科目と分野を選んで「問題を生成」を押してください
-      </div>
-      <div id="svg-figure" class="hidden" style="margin-top:14px;text-align:center;background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--radius-sm);padding:16px">
-        <div style="font-size:12px;color:var(--gray400);margin-bottom:8px">📐 補助図形</div>
+      <div class="card-title">問題</div>
+      <div class="question-box empty" id="question-display">科目と分野を選んで「問題を生成」を押してください</div>
+      <div id="svg-figure" class="hidden figure-wrap">
+        <div class="figure-label">📐 補助図形</div>
         <div id="svg-content"></div>
       </div>
     </div>
 
-    <!-- 解答・添削 -->
     <div class="card">
       <div class="field-label">✍️ 解答欄</div>
-      <textarea id="answer-input" rows="6" placeholder="ここに解答を入力してください..."></textarea>
+      <div id="answer-text-area">
+        <textarea id="answer-input" rows="6" placeholder="ここに解答を入力してください..."></textarea>
+      </div>
+      <div id="answer-mark-area" class="hidden">
+        <div id="mark-sheet" class="mark-area"></div>
+        <input type="hidden" id="answer-input-mark">
+      </div>
       <div class="action-row">
         <button class="btn btn-ghost" onclick="showHint()">💡 ヒント</button>
         <button class="btn btn-ghost" onclick="showModel()">📖 模範解答</button>
-        <button class="btn btn-green" id="score-btn" onclick="scoreAnswer()">
-          採点・添削する →
-        </button>
+        <button class="btn btn-green" id="score-btn" onclick="scoreAnswer()">採点・添削する →</button>
       </div>
       <div id="score-display" class="hidden"></div>
       <div id="feedback-drill" class="hidden"></div>
+
       <!-- 質問コーナー -->
-      <div id="question-corner" class="hidden" style="margin-top:14px">
-        <div style="background:var(--amber-light);border:1.5px solid #FDE68A;border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:var(--amber);margin-bottom:8px">
-          ⚠️ 個人情報（名前・学校名・住所など）は入力しないでください
-        </div>
+      <div id="question-corner" class="hidden question-corner">
+        <div class="corner-warning">⚠️ 個人情報（名前・学校名など）は入力しないでください</div>
         <div class="field-label">❓ わからない点を質問する</div>
-        <textarea id="question-input" rows="3" placeholder="例：この問題の積分の解き方がわかりません。どこから考えればいいですか？"></textarea>
+        <textarea id="question-input" rows="3" placeholder="例：この問題の考え方がわかりません。どこから始めればいいですか？"></textarea>
         <div class="action-row">
           <button class="btn btn-ghost" id="ask-btn" onclick="askQuestion()">質問する →</button>
         </div>
@@ -249,82 +337,87 @@ textarea::placeholder{color:var(--gray400)}
 
   <!-- 弱点分析 -->
   <div id="tab-analysis" class="hidden">
-    <!-- 推定偏差値カード -->
-    <div id="deviation-card" style="background:linear-gradient(135deg,#1D4ED8,#3730A3);border-radius:var(--radius);padding:20px;margin-bottom:14px;color:#fff">
-      <div style="display:flex;align-items:center;justify-content:space-between">
+
+    <!-- 推定偏差値 -->
+    <div class="deviation-card">
+      <div class="dev-top">
         <div>
-          <div style="font-size:12px;opacity:0.8;letter-spacing:0.08em;margin-bottom:6px">推定偏差値（目安）</div>
-          <div style="display:flex;align-items:baseline;gap:8px">
-            <span id="deviation-value" style="font-size:52px;font-weight:800;line-height:1">—</span>
-            <span style="font-size:16px;opacity:0.8">前後</span>
+          <div class="dev-label">推定偏差値（目安）</div>
+          <div>
+            <span id="deviation-value" class="dev-value">—</span>
+            <span class="dev-unit">前後</span>
           </div>
-          <div id="deviation-label" style="font-size:13px;opacity:0.8;margin-top:6px">演習を積むと表示されます</div>
+          <div id="deviation-message" class="dev-message">演習を積むと表示されます</div>
         </div>
-        <div style="text-align:right">
-          <div style="font-size:11px;opacity:0.7;margin-bottom:4px">到達目標まで</div>
-          <div id="deviation-target" style="font-size:22px;font-weight:700">—</div>
-          <div style="font-size:11px;opacity:0.7;margin-top:2px">問</div>
+        <div class="dev-target">
+          <div style="font-size:10px;color:var(--slate3);margin-bottom:4px">目標まで残り</div>
+          <div id="deviation-target" class="dev-target-num">—</div>
+          <div class="dev-target-lbl">問</div>
         </div>
       </div>
-      <div style="margin-top:14px;background:rgba(255,255,255,0.15);border-radius:6px;height:8px;overflow:hidden">
-        <div id="deviation-bar" style="height:8px;border-radius:6px;background:#fff;width:0%;transition:width 0.8s"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:10px;opacity:0.6;margin-top:4px">
-        <span>偏差値40</span><span>50</span><span>60</span><span>70以上</span>
+      <div class="dev-bar-wrap">
+        <div class="dev-bar-bg">
+          <div id="deviation-bar" class="dev-bar-fill" style="width:0%"></div>
+        </div>
+        <div class="dev-bar-labels">
+          <span>40</span><span>50</span><span>60</span><span>70+</span>
+        </div>
       </div>
     </div>
 
-    <!-- 科目別レーダーチャート -->
-    <div class="card" style="margin-bottom:14px">
-      <div class="card-title">🎯 科目別到達度</div>
-      <div style="display:flex;justify-content:center;padding:8px 0">
-        <canvas id="radar-chart" width="320" height="280"></canvas>
-      </div>
-    </div>
-
+    <!-- 連続学習 -->
     <div class="streak-banner">
-      <div>
-        <div class="streak-text">🔥 学習継続中</div>
+      <div class="streak-left">
+        <div class="streak-title">🔥 学習継続中</div>
         <div class="streak-sub">毎日の積み重ねが合格への近道</div>
       </div>
-      <div>
+      <div class="streak-right">
         <div class="streak-num" id="streak-num">0</div>
         <div class="streak-day">日連続</div>
       </div>
     </div>
 
+    <!-- 統計 -->
     <div class="stat-row">
       <div class="stat-card">
-        <div class="stat-val" id="stat-total">0</div>
         <div class="stat-lbl">累計演習数</div>
+        <div class="stat-val" id="stat-total">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-val" id="stat-avg">—</div>
         <div class="stat-lbl">平均正答率</div>
+        <div class="stat-val" id="stat-avg">—</div>
       </div>
       <div class="stat-card">
-        <div class="stat-val" id="stat-days">0</div>
         <div class="stat-lbl">学習日数</div>
+        <div class="stat-val" id="stat-days">0</div>
       </div>
     </div>
 
+    <!-- レーダーチャート -->
     <div class="card">
-      <div class="card-title">⚠️ 苦手分野ランキング（正答率低い順）</div>
+      <div class="card-title">科目別到達度</div>
+      <div style="display:flex;justify-content:center;padding:8px 0">
+        <canvas id="radar-chart" width="320" height="280"></canvas>
+      </div>
+    </div>
+
+    <!-- 弱点リスト -->
+    <div class="card">
+      <div class="card-title">苦手分野ランキング</div>
       <div id="weak-list">
-        <div style="color:var(--gray400);font-size:13px;text-align:center;padding:24px">
-          演習を積むと苦手分野が表示されます
-        </div>
+        <div style="color:var(--slate3);font-size:13px;text-align:center;padding:24px;font-style:italic">演習を積むと苦手分野が表示されます</div>
       </div>
     </div>
 
+    <!-- 科目別棒グラフ -->
     <div class="card">
-      <div class="card-title">📅 科目別演習数</div>
+      <div class="card-title">科目別演習数</div>
       <div id="subject-chart"></div>
     </div>
 
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
-      <button class="btn btn-ghost btn-sm" onclick="exportJSON()">💾 JSONエクスポート</button>
-      <button class="btn btn-ghost btn-sm" onclick="clearHistory()">🗑 履歴リセット</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportJSON()">💾 エクスポート</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearHistory()">🗑 リセット</button>
     </div>
   </div>
 
@@ -332,98 +425,89 @@ textarea::placeholder{color:var(--gray400)}
 
 <script>
 const WORKER_URL = "https://study-proxy-morning-silence-f64f.ksey-fgljfsmg7475219t.workers.dev";
-const LEVELS_PLACEHOLDER = ''; // replaced
 
 const LEVELS = {
-  A: {
-    label: 'レベル A',
-    desc: '難関国立・文系（阪大・名大・旧帝文系）',
-    prompt: '難関国立大学文系学部（阪大・名大・東北大・九大の文系レベル）',
-    badge: 'background:var(--amber-light);color:var(--amber)',
-    sub: '難関国立文系 レベルA対策',
-    note: '文系・標準〜応用・記述式中心',
+  A:{
+    label:'レベル A', sub:'難関国立文系 レベルA対策',
+    note:'文系・記述式中心｜英作文・国語・世界史',
+    badge:'background:var(--navy);color:var(--blue)',
+    prompt:'難関国立大学文系学部（阪大・名大・東北大・九大の文系レベル）',
   },
-  C: {
-    label: 'レベル C',
-    desc: '共通テスト重視',
-    prompt: '共通テスト（センター試験レベル）',
-    badge: 'background:var(--green-light);color:var(--green)',
-    sub: '共通テスト レベルC対策',
-    note: 'マーク式・標準レベル',
+  C:{
+    label:'レベル C', sub:'共通テスト レベルC対策',
+    note:'マーク式・標準レベル｜全科目対応',
+    badge:'background:var(--green-light);color:#065F46',
+    prompt:'共通テスト（センター試験レベル）',
   },
 };
+
+const LEVEL_SUBJECTS = {
+  A:[
+    {value:'eng_essay', label:'英語（英作文）',    fields:['全分野','自由英作文','和文英訳','条件英作文','要約英作文']},
+    {value:'jpn_mod',   label:'国語（現代文）',    fields:['全分野','評論文読解','小説読解','要約・論述']},
+    {value:'jpn_cls',   label:'国語（古文）',      fields:['全分野','文法・助動詞','読解','和歌・韻文']},
+    {value:'jpn_kan',   label:'国語（漢文）',      fields:['全分野','句法','読解','書き下し文']},
+    {value:'world',     label:'世界史',            fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史']},
+  ],
+  C:[
+    {value:'eng_read',  label:'英語（リーディング）',fields:['全分野','長文読解','文法・語法','語彙・熟語','要約問題']},
+    {value:'eng_listen',label:'英語（リスニング）',  fields:['全分野','会話文','説明文・講義','図表読み取り']},
+    {value:'jpn_mod',   label:'国語（現代文）',      fields:['全分野','評論文読解','小説読解','実用文']},
+    {value:'jpn_cls',   label:'国語（古文）',        fields:['全分野','文法・助動詞','読解','和歌']},
+    {value:'jpn_kan',   label:'国語（漢文）',        fields:['全分野','句法','読解','書き下し文']},
+    {value:'math1a',    label:'数学ⅠA',             fields:['全分野','数と式','二次関数','図形と計量','データの分析','場合の数・確率']},
+    {value:'math2bc',   label:'数学ⅡBC',            fields:['全分野','指数・対数','三角関数','微積分','数列','ベクトル','複素数平面']},
+    {value:'world_c',   label:'世界史',              fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史']},
+    {value:'politics',  label:'公共・政治・経済',    fields:['全分野','公共・倫理','政治（日本・国際）','経済（ミクロ・マクロ）','時事問題']},
+    {value:'bio_basic', label:'生物基礎',            fields:['全分野','細胞と生命','遺伝情報','体内環境','生態系']},
+    {value:'earth',     label:'地学基礎',            fields:['全分野','地球の構造','大気・海洋','天体','地球の歴史']},
+    {value:'info1',     label:'情報Ⅰ',              fields:['全分野','情報社会','アルゴリズム','ネットワーク','データ活用']},
+  ],
+};
+
 let currentLevel = localStorage.getItem('examLevel') || 'A';
+let currentSubj = '';
+let currentField = '全分野';
+let currentQuestion = '';
+let history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
+
+function getSubjects(){ return LEVEL_SUBJECTS[currentLevel] || LEVEL_SUBJECTS['A']; }
+function getSubjectLabel(val){ const s=getSubjects().find(s=>s.value===val); return s?s.label:val; }
+function getSubjectFields(val){ const s=getSubjects().find(s=>s.value===val); return s?s.fields:['全分野']; }
+function getLevelDesc(){ return LEVELS[currentLevel].prompt; }
 
 function setLevel(lv){
   currentLevel = lv;
   localStorage.setItem('examLevel', lv);
   const L = LEVELS[lv];
-  document.getElementById('level-badge').textContent = L.label;
-  document.getElementById('level-badge').style.cssText = L.badge + ';padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.05em';
   document.getElementById('brand-sub').textContent = L.sub;
+  document.getElementById('level-badge').textContent = L.label;
+  document.getElementById('level-badge').style.cssText = L.badge+';padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.06em';
   document.getElementById('level-note').textContent = L.note;
-  document.querySelectorAll('.lv-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.lv === lv);
-  });
-  // 問題リセット
-  currentQuestion = '';
-  document.getElementById('question-display').className = 'question-wrap empty';
-  document.getElementById('question-display').textContent = '科目と分野を選んで「問題を生成」を押してください';
-  document.getElementById('q-meta').style.display = 'none';
-  document.getElementById('feedback-drill').classList.add('hidden');
-  document.getElementById('score-display').classList.add('hidden');
-  document.getElementById('answer-input').value = '';
-  document.getElementById('svg-figure').classList.add('hidden');
-  // 科目リストを更新
+  document.getElementById('q-level-badge').textContent = L.label;
+  document.querySelectorAll('.lv-btn').forEach(b=>b.classList.toggle('active', b.dataset.lv===lv));
+  resetQuestion();
   updateSubjectSelect();
 }
 
-function getLevelDesc(){ return LEVELS[currentLevel].prompt; }
-
-// レベル別科目定義
-const LEVEL_SUBJECTS = {
-  A: [
-    { value:'eng_essay', label:'英語（英作文）',       fields:['全分野','自由英作文','和文英訳','条件英作文','要約英作文'] },
-    { value:'jpn_mod',   label:'国語（現代文）',       fields:['全分野','評論文読解','小説読解','要約・論述'] },
-    { value:'jpn_cls',   label:'国語（古文）',         fields:['全分野','文法・助動詞','読解','和歌・韻文'] },
-    { value:'jpn_kan',   label:'国語（漢文）',         fields:['全分野','句法','読解','書き下し文'] },
-    { value:'world',     label:'世界史',               fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史'] },
-  ],
-  C: [
-    { value:'eng_read',  label:'英語（リーディング）', fields:['全分野','長文読解','文法・語法','語彙・熟語','要約問題'] },
-    { value:'eng_listen',label:'英語（リスニング）',   fields:['全分野','会話文','説明文・講義','図表読み取り'] },
-    { value:'jpn_mod',   label:'国語（現代文）',       fields:['全分野','評論文読解','小説読解','実用文'] },
-    { value:'jpn_cls',   label:'国語（古文）',         fields:['全分野','文法・助動詞','読解','和歌'] },
-    { value:'jpn_kan',   label:'国語（漢文）',         fields:['全分野','句法','読解','書き下し文'] },
-    { value:'math1a',    label:'数学ⅠA',              fields:['全分野','数と式','二次関数','図形と計量','データの分析','場合の数・確率'] },
-    { value:'math2bc',   label:'数学ⅡBC',             fields:['全分野','指数・対数','三角関数','微積分','数列','ベクトル','複素数平面'] },
-    { value:'world_c',   label:'世界史',               fields:['全分野','古代・中世','近世','近代（19c）','現代（20c）','地域史'] },
-    { value:'politics',  label:'公共・政治・経済',     fields:['全分野','公共・倫理','政治（日本・国際）','経済（ミクロ・マクロ）','時事問題'] },
-    { value:'bio_basic', label:'生物基礎',             fields:['全分野','細胞と生命','遺伝情報','体内環境','生態系'] },
-    { value:'earth',     label:'地学基礎',             fields:['全分野','地球の構造','大気・海洋','天体','地球の歴史'] },
-    { value:'info1',     label:'情報Ⅰ',               fields:['全分野','情報社会','アルゴリズム','ネットワーク','データ活用'] },
-  ],
-};
-
-// 現在のレベルに応じた科目リストを返す
-function getSubjects(){ return LEVEL_SUBJECTS[currentLevel] || LEVEL_SUBJECTS['A']; }
-function getSubjectLabel(val){ 
-  const s = getSubjects().find(s=>s.value===val);
-  return s ? s.label : val;
+function resetQuestion(){
+  currentQuestion='';
+  const qbox = document.getElementById('question-display');
+  qbox.className='question-box empty';
+  qbox.textContent='科目と分野を選んで「問題を生成」を押してください';
+  document.getElementById('q-meta').style.display='none';
+  document.getElementById('feedback-drill').classList.add('hidden');
+  document.getElementById('score-display').classList.add('hidden');
+  document.getElementById('answer-input').value='';
+  document.getElementById('answer-input-mark').value='';
+  document.getElementById('mark-sheet').innerHTML='';
+  document.getElementById('answer-text-area').classList.remove('hidden');
+  document.getElementById('answer-mark-area').classList.add('hidden');
+  document.getElementById('svg-figure').classList.add('hidden');
+  document.getElementById('question-corner').classList.add('hidden');
+  document.getElementById('feedback-question').classList.add('hidden');
+  document.getElementById('gen-btn').innerHTML='✦ 問題を生成';
 }
-function getSubjectFields(val){
-  const s = getSubjects().find(s=>s.value===val);
-  return s ? s.fields : ['全分野'];
-}
-
-// 後方互換用（レーダーチャートなど）
-const SUBJECT_NAMES = {};
-const FIELDS = {};
-
-let currentQuestion = '';
-let currentSubj = 'math';
-let currentField = '全分野';
-let history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
 
 function updateSubjectSelect(){
   const sel = document.getElementById('subject');
@@ -439,17 +523,14 @@ function updateFields(){
   f.innerHTML = getSubjectFields(currentSubj).map(v=>`<option>${v}</option>`).join('');
   currentField = '全分野';
 }
-updateSubjectSelect();
 
-document.getElementById('field').addEventListener('change', function(){
-  currentField = this.value;
-});
+document.getElementById('field').addEventListener('change', function(){ currentField=this.value; });
 
 async function callWorker(prompt){
-  const res = await fetch(WORKER_URL, {
+  const res = await fetch(WORKER_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({prompt})
+    body:JSON.stringify({prompt})
   });
   const data = await res.json();
   if(data.error) throw new Error(data.error);
@@ -457,242 +538,316 @@ async function callWorker(prompt){
 }
 
 function setBtn(id, loading, label){
-  const btn = document.getElementById(id);
+  const btn=document.getElementById(id);
   if(!btn) return;
-  btn.disabled = loading;
-  btn.innerHTML = loading ? `<span class="loading"></span> ${label}` : label;
+  btn.disabled=loading;
+  btn.innerHTML=loading?`<span class="loading"></span> ${label}`:label;
 }
 
 async function generateQuestion(){
-  const subjName = getSubjectLabel(currentSubj);
-  const field = document.getElementById('field').value;
-  currentField = field;
+  const subjName=getSubjectLabel(currentSubj);
+  const field=document.getElementById('field').value;
+  currentField=field;
+  const isMath=currentSubj==='math1a'||currentSubj==='math2bc';
+  const isMarkStyle=currentLevel==='C';
+  const isBunKei=currentLevel==='A';
 
-  setBtn('gen-btn', true, '生成中...');
-  const qbox = document.getElementById('question-display');
-  qbox.className = 'question-wrap';
-  qbox.textContent = '問題を生成しています...';
-  document.getElementById('feedback-drill').classList.add('hidden');
-  document.getElementById('score-display').classList.add('hidden');
-  document.getElementById('answer-input').value = '';
-  document.getElementById('q-meta').style.display = 'none';
+  setBtn('gen-btn',true,'生成中...');
+  resetQuestion();
 
-  const isMarkStyle = currentLevel === 'C';
-  const isBunKei = currentLevel === 'A';
-  const prompt = `あなたは${getLevelDesc()}の入試問題作成の専門家です。
+  const qbox=document.getElementById('question-display');
+  qbox.className='question-box';
+  qbox.textContent='問題を生成しています...';
+
+  const prompt=`あなたは${getLevelDesc()}の入試問題作成の専門家です。
 
 条件：
 - 科目：${subjName}
 - 分野：${field}
 - 難易度：${getLevelDesc()}の本番入試レベル
-- 形式：${isMarkStyle ? 'マーク式（選択肢4つ付き）＋一部記述' : '記述式'}
-${isBunKei ? '- 文系科目（英語・国語・社会・数学IA）を中心とした出題にすること' : ''}
-- 問題文のみを出力すること
-- 解答・解説・前置き・ラベルは一切不要
+- 形式：${isMarkStyle?'マーク式（選択肢4つ付き）':'記述式'}
+- 問題文のみ出力（解答・解説・前置き不要）
 - Markdownや装飾記号は使わない
 - 数式は通常テキストで記述
-${isMarkStyle ? '- 選択肢は(1)〜(4)の形式で付けること' : ''}
+${isBunKei?'- 文系学部向けの内容にすること':''}
+${isMarkStyle?'- 選択肢は(1)〜(4)の形式で付けること':''}
 
 問題文のみ出力してください。`;
 
   try{
-    const text = await callWorker(prompt);
-    currentQuestion = text;
-    qbox.textContent = text;
-    document.getElementById('q-subject-badge').textContent = subjName + (field !== '全分野' ? ' › ' + field : '');
-    document.getElementById('q-meta').style.display = 'flex';
-    recordHistory(currentSubj, field, null);
+    const text=await callWorker(prompt);
+    currentQuestion=text;
+    qbox.className='question-box';
+    qbox.textContent=text;
+    document.getElementById('q-subject-badge').textContent=subjName+(field!=='全分野'?' › '+field:'');
+    document.getElementById('q-meta').style.display='flex';
+    recordHistory(currentSubj,field,null);
 
-    // 数学の場合は補助図形を生成
-    if(currentSubj === 'math1a' || currentSubj === 'math2bc' || currentSubj === 'math1a' || currentSubj === 'math2bc'){
-      generateFigure(text);
+    if(isMarkStyle){
+      document.getElementById('answer-text-area').classList.add('hidden');
+      document.getElementById('answer-mark-area').classList.remove('hidden');
+      buildMarkSheet(text);
     } else {
-      document.getElementById('svg-figure').classList.add('hidden');
+      document.getElementById('answer-text-area').classList.remove('hidden');
+      document.getElementById('answer-mark-area').classList.add('hidden');
     }
+    if(isMath) generateFigure(text);
   } catch(e){
-    qbox.className = 'question-wrap empty';
-    qbox.textContent = 'エラー: ' + e.message;
+    qbox.className='question-box empty';
+    qbox.textContent='エラー: '+e.message;
   } finally {
-    setBtn('gen-btn', false, '✦ 次の問題');
+    setBtn('gen-btn',false,'✦ 次の問題');
   }
 }
 
 async function scoreAnswer(){
   if(!currentQuestion){alert('まず問題を生成してください');return;}
-  const ans = document.getElementById('answer-input').value.trim();
+  const isMarkMode=currentLevel==='C'&&!document.getElementById('answer-mark-area').classList.contains('hidden');
+  const ans=isMarkMode?document.getElementById('answer-input-mark').value.trim():document.getElementById('answer-input').value.trim();
   if(!ans){alert('解答を入力してください');return;}
-  const subjName = getSubjectLabel(currentSubj);
+  const subjName=getSubjectLabel(currentSubj);
 
-  setBtn('score-btn', true, '採点中...');
-  const fb = document.getElementById('feedback-drill');
-  fb.className = 'feedback ok';
-  fb.textContent = '採点・添削しています...';
+  setBtn('score-btn',true,'採点中...');
+  const fb=document.getElementById('feedback-drill');
+  fb.className='feedback ok';
+  fb.textContent='採点・添削しています...';
   fb.classList.remove('hidden');
   document.getElementById('score-display').classList.add('hidden');
 
-  const prompt = `あなたは${getLevelDesc()}の採点・添削専門家です。
+  const prompt=`あなたは${getLevelDesc()}の採点・添削専門家です。
 
 【科目】${subjName}（${currentField}）
-
 【問題】
 ${currentQuestion}
-
-【受験生の解答】
+【解答】
 ${ans}
 
-以下の形式で採点・添削してください。Markdownや装飾記号は使わず、プレーンテキストで出力してください：
+以下の形式でプレーンテキストで採点してください：
 
-【総合評価】A / B / C / D のいずれか1文字と、10点満点での得点
-
+【総合評価】A〜Dの1文字と10点満点での得点
 【良かった点】
-具体的に記述
-
 【改善すべき点】
-具体的に記述
-
 【模範解答のポイント】
-要点を箇条書き
-
 【次のステップ】
-重点的に学ぶべきこと
 
-${getLevelDesc()}基準で、厳しくかつ建設的に評価してください。`;
+${getLevelDesc()}基準で厳しく評価してください。`;
 
   try{
-    const text = await callWorker(prompt);
-    fb.textContent = text;
-
-    const grade = text.match(/【総合評価】\s*([A-D])/)?.[1] || text.match(/評価[：:]\s*([A-D])/)?.[1];
-    const score = grade ? {A:90,B:70,C:50,D:30}[grade] : 60;
-    const gradeColor = {A:'var(--green)',B:'var(--blue)',C:'var(--amber)',D:'var(--red)'}[grade] || 'var(--blue)';
-    const gradeMsg = {A:'素晴らしい！',B:'良好です',C:'もう一息',D:'要復習'}[grade] || '';
-
+    const text=await callWorker(prompt);
+    fb.textContent=text;
+    const grade=text.match(/【総合評価】\s*([A-D])/)?.[1]||text.match(/([A-D])\/10/)?.[1];
+    const score=grade?{A:90,B:70,C:50,D:30}[grade]:60;
+    const gradeColor={A:'var(--green)',B:'var(--blue)',C:'var(--amber)',D:'var(--red)'}[grade]||'var(--blue)';
+    const gradeMsg={A:'素晴らしい！合格圏内',B:'良好です。もう一息',C:'標準レベル。演習を続けよう',D:'基礎から見直そう'}[grade]||'';
     if(grade){
-      const sd = document.getElementById('score-display');
-      sd.innerHTML = `<div class="score-display">
+      document.getElementById('score-display').innerHTML=`<div class="score-display">
         <div class="score-grade" style="color:${gradeColor}">${grade}</div>
         <div class="score-info">
-          <div class="score-title">${gradeMsg} （${score}/100点換算）</div>
-          <div class="score-sub">${subjName} › ${currentField}</div>
+          <div class="score-title">${gradeMsg}</div>
+          <div class="score-sub">${subjName} › ${currentField}｜推定${score}点</div>
         </div>
       </div>`;
-      sd.classList.remove('hidden');
+      document.getElementById('score-display').classList.remove('hidden');
     }
-
-    recordHistory(currentSubj, currentField, score);
+    recordHistory(currentSubj,currentField,score);
     updateHeaderStats();
     document.getElementById('question-corner').classList.remove('hidden');
-setLevel(currentLevel);
   } catch(e){
-    fb.className = 'feedback err';
-    fb.textContent = 'エラー: ' + e.message;
+    fb.className='feedback err';
+    fb.textContent='エラー: '+e.message;
   } finally {
-    setBtn('score-btn', false, '採点・添削する →');
+    setBtn('score-btn',false,'採点・添削する →');
   }
 }
 
 async function showHint(){
   if(!currentQuestion){alert('まず問題を生成してください');return;}
-  const fb = document.getElementById('feedback-drill');
-  fb.className = 'feedback hint';
-  fb.textContent = 'ヒントを生成中...';
+  const fb=document.getElementById('feedback-drill');
+  fb.className='feedback hint';
+  fb.textContent='ヒントを生成中...';
   fb.classList.remove('hidden');
-  const prompt = `次の問題のヒントを、答えを言わずに3点だけ挙げてください。Markdownや記号は使わずプレーンテキストで。\n\n${currentQuestion}`;
-  try{
-    fb.textContent = await callWorker(prompt);
-  } catch(e){
-    fb.className = 'feedback err';
-    fb.textContent = 'エラー: ' + e.message;
-  }
+  try{ fb.textContent=await callWorker(`次の問題のヒントを3点だけ、答えを言わずに示してください。プレーンテキストで。\n\n${currentQuestion}`); }
+  catch(e){ fb.className='feedback err'; fb.textContent='エラー: '+e.message; }
 }
 
 async function showModel(){
   if(!currentQuestion){alert('まず問題を生成してください');return;}
-  const fb = document.getElementById('feedback-drill');
-  fb.className = 'feedback ok';
-  fb.textContent = '模範解答を生成中...';
+  const fb=document.getElementById('feedback-drill');
+  fb.className='feedback ok';
+  fb.textContent='模範解答を生成中...';
   fb.classList.remove('hidden');
-  const prompt = `次の問題の模範解答と解説を、${getLevelDesc()}基準で示してください。Markdownや記号は使わずプレーンテキストで。\n\n${currentQuestion}`;
-  try{
-    fb.textContent = await callWorker(prompt);
-  } catch(e){
-    fb.className = 'feedback err';
-    fb.textContent = 'エラー: ' + e.message;
-  }
+  try{ fb.textContent=await callWorker(`次の問題の模範解答と解説を${getLevelDesc()}基準で示してください。プレーンテキストで。\n\n${currentQuestion}`); }
+  catch(e){ fb.className='feedback err'; fb.textContent='エラー: '+e.message; }
 }
 
-function recordHistory(subjVal, field, score){
-  const today = new Date().toDateString();
-  const key = subjVal + '|' + field;
-  if(!history[key]) history[key] = {subjVal, field, scores:[], dates:[], count:0};
-  if(score !== null){history[key].scores.push(score); history[key].count++;}
+async function generateFigure(questionText){
+  const figEl=document.getElementById('svg-figure');
+  const svgEl=document.getElementById('svg-content');
+  figEl.classList.remove('hidden');
+  svgEl.innerHTML='<div style="color:var(--slate3);font-size:13px;padding:8px">図形を生成中...</div>';
+  const prompt=`次の数学問題に補助図形が必要か判断し、必要な場合のみSVGを出力してください。
+
+【問題】${questionText}
+
+ルール：
+- 図形不要なら「NOFIGURE」とだけ出力
+- SVGのみ出力（説明文・コードブロック記号不要）
+- width="400" height="300"に固定
+- 座標軸は#CBD5E1、図形は#3B82F6か#1E293B
+- ラベルはfont-size="14"
+- シンプルに`;
+  try{
+    const text=await callWorker(prompt);
+    if(text.trim()==='NOFIGURE'||!text.includes('<svg')){ figEl.classList.add('hidden'); return; }
+    const match=text.match(/<svg[\s\S]*<\/svg>/i);
+    if(match){ svgEl.innerHTML=match[0]; }
+    else{ figEl.classList.add('hidden'); }
+  } catch(e){ figEl.classList.add('hidden'); }
+}
+
+function buildMarkSheet(questionText){
+  const sheet=document.getElementById('mark-sheet');
+  sheet.innerHTML='';
+  const kanaItems=[...new Set(questionText.match(/[アイウエオカキクケコ]/g)||[])];
+  const choiceNums=questionText.match(/\((\d+)\)/g)||[];
+  const maxChoice=choiceNums.length>0?Math.min(8,Math.max(...choiceNums.map(s=>parseInt(s.replace(/[()]/g,''))).filter(n=>n>=1))):4;
+  const items=kanaItems.length>0?kanaItems:['問1','問2','問3'];
+  items.forEach(item=>{
+    const row=document.createElement('div');
+    row.className='mark-row';
+    const optsDiv=document.createElement('div');
+    optsDiv.className='mark-options';
+    optsDiv.id='opts-'+item;
+    row.innerHTML=`<span class="mark-qnum">${item}</span>`;
+    row.appendChild(optsDiv);
+    sheet.appendChild(row);
+    for(let i=1;i<=maxChoice;i++){
+      const btn=document.createElement('button');
+      btn.className='mark-btn';
+      btn.textContent=i;
+      btn.onclick=function(){
+        optsDiv.querySelectorAll('.mark-btn').forEach(b=>b.classList.remove('selected'));
+        this.classList.add('selected');
+        updateMarkAnswer();
+      };
+      optsDiv.appendChild(btn);
+    }
+  });
+  updateMarkAnswer();
+}
+
+function updateMarkAnswer(){
+  const sheet=document.getElementById('mark-sheet');
+  const rows=sheet.querySelectorAll('.mark-row');
+  const answers=[];
+  rows.forEach(row=>{
+    const qnum=row.querySelector('.mark-qnum').textContent;
+    const sel=row.querySelector('.mark-btn.selected');
+    answers.push(`${qnum}：${sel?'('+sel.textContent+')':'未選択'}`);
+  });
+  document.getElementById('answer-input-mark').value=answers.join('、');
+}
+
+async function askQuestion(){
+  if(!currentQuestion){alert('まず問題を生成してください');return;}
+  const q=document.getElementById('question-input').value.trim();
+  if(!q){alert('質問を入力してください');return;}
+  setBtn('ask-btn',true,'回答中...');
+  const fb=document.getElementById('feedback-question');
+  fb.className='feedback hint';
+  fb.textContent='回答を生成しています...';
+  fb.classList.remove('hidden');
+  const prompt=`あなたは${getLevelDesc()}の受験指導専門家です。
+
+【問題】${currentQuestion}
+【質問】${q}
+
+丁寧にわかりやすく説明してください。プレーンテキストで。`;
+  try{ fb.textContent=await callWorker(prompt); }
+  catch(e){ fb.className='feedback err'; fb.textContent='エラー: '+e.message; }
+  finally{ setBtn('ask-btn',false,'質問する →'); }
+}
+
+function recordHistory(subjVal,field,score){
+  const today=new Date().toDateString();
+  const key=subjVal+'|'+field;
+  if(!history[key]) history[key]={subjVal,field,scores:[],dates:[],count:0};
+  if(score!==null){history[key].scores.push(score);history[key].count++;}
   if(!history[key].dates.includes(today)) history[key].dates.push(today);
-  localStorage.setItem('examHistory_v3', JSON.stringify(history));
+  localStorage.setItem('examHistory_v3',JSON.stringify(history));
 }
 
 function updateHeaderStats(){
-  history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
-  let total = 0, sumScore = 0, countScore = 0;
-  const allDates = new Set();
+  history=JSON.parse(localStorage.getItem('examHistory_v3')||'{}');
+  let total=0,sumScore=0,countScore=0;
+  const allDates=new Set();
   for(const d of Object.values(history)){
-    d.dates.forEach(dt => allDates.add(dt));
-    total += d.scores.length;
-    if(d.scores.length){
-      const avg = d.scores.reduce((a,b)=>a+b,0)/d.scores.length;
-      sumScore += avg; countScore++;
-    }
+    d.dates.forEach(dt=>allDates.add(dt));
+    total+=d.scores.length;
+    if(d.scores.length){const avg=d.scores.reduce((a,b)=>a+b,0)/d.scores.length;sumScore+=avg;countScore++;}
   }
-  document.getElementById('h-total').textContent = total;
-  document.getElementById('h-days').textContent = allDates.size;
-  document.getElementById('h-avg').textContent = countScore ? Math.round(sumScore/countScore)+'%' : '—';
+  document.getElementById('h-total').textContent=total;
+  document.getElementById('h-days').textContent=allDates.size;
+  document.getElementById('h-avg').textContent=countScore?Math.round(sumScore/countScore)+'%':'—';
 }
 
 function updateAnalysis(){
-  history = JSON.parse(localStorage.getItem('examHistory_v3') || '{}');
-  let total = 0, sumScore = 0, countScore = 0;
-  const allDates = new Set();
-  const items = [];
-  const subjCount = {};
-
-  for(const [key, d] of Object.entries(history)){
-    d.dates.forEach(dt => allDates.add(dt));
-    total += d.scores.length;
-    const avg = d.scores.length ? Math.round(d.scores.reduce((a,b)=>a+b,0)/d.scores.length) : null;
-    if(avg !== null){sumScore += avg; countScore++;}
-    const label = (SUBJECT_NAMES[d.subjVal]||d.subjVal) + (d.field !== '全分野' ? ' › '+d.field : '');
-    items.push({label, avg, count: d.scores.length});
-    subjCount[SUBJECT_NAMES[d.subjVal]||d.subjVal] = (subjCount[SUBJECT_NAMES[d.subjVal]||d.subjVal]||0) + d.scores.length;
+  history=JSON.parse(localStorage.getItem('examHistory_v3')||'{}');
+  let total=0,sumScore=0,countScore=0;
+  const allDates=new Set();
+  const items=[];
+  const subjCount={};
+  for(const [,d] of Object.entries(history)){
+    d.dates.forEach(dt=>allDates.add(dt));
+    total+=d.scores.length;
+    const avg=d.scores.length?Math.round(d.scores.reduce((a,b)=>a+b,0)/d.scores.length):null;
+    if(avg!==null){sumScore+=avg;countScore++;}
+    const sname=getSubjectLabel(d.subjVal);
+    const label=sname+(d.field!=='全分野'?' › '+d.field:'');
+    items.push({label,avg,count:d.scores.length,sname});
+    subjCount[sname]=(subjCount[sname]||0)+d.scores.length;
   }
 
-  // 連続日数計算
-  const dates = [...allDates].map(d=>new Date(d)).sort((a,b)=>b-a);
-  let streak = 0;
-  const today = new Date(); today.setHours(0,0,0,0);
-  for(let i=0;i<dates.length;i++){
-    const d = new Date(dates[i]); d.setHours(0,0,0,0);
-    const diff = Math.round((today - d)/(1000*60*60*24));
-    if(diff === i) streak++;
-    else break;
-  }
+  const dates=[...allDates].map(d=>new Date(d)).sort((a,b)=>b-a);
+  let streak=0;
+  const today=new Date();today.setHours(0,0,0,0);
+  for(let i=0;i<dates.length;i++){const d=new Date(dates[i]);d.setHours(0,0,0,0);if(Math.round((today-d)/86400000)===i)streak++;else break;}
 
-  document.getElementById('streak-num').textContent = streak;
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-avg').textContent = countScore ? Math.round(sumScore/countScore)+'%' : '—';
-  document.getElementById('stat-days').textContent = allDates.size;
+  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('stat-avg').textContent=countScore?Math.round(sumScore/countScore)+'%':'—';
+  document.getElementById('stat-days').textContent=allDates.size;
+
+  // 偏差値
+  const scored=items.filter(i=>i.count>0);
+  if(scored.length){
+    const avgScore=Math.round(scored.reduce((a,b)=>a+(b.avg||0),0)/scored.length);
+    let dev,msg,targetQ;
+    if(avgScore>=88){dev=70;msg='合格圏内！このまま維持しよう';targetQ=0;}
+    else if(avgScore>=75){dev=65;msg='あと一息で合格圏内';targetQ=Math.round((88-avgScore)*2);}
+    else if(avgScore>=62){dev=60;msg='標準レベル到達。応用力を鍛えよう';targetQ=Math.round((75-avgScore)*3);}
+    else if(avgScore>=50){dev=55;msg='基礎は定着。得意科目を伸ばそう';targetQ=Math.round((62-avgScore)*4);}
+    else if(avgScore>=38){dev=50;msg='基礎固めが最優先';targetQ=Math.round((50-avgScore)*5);}
+    else{dev=45;msg='基本からもう一度確認しよう';targetQ=Math.round((38-avgScore)*6);}
+    document.getElementById('deviation-value').textContent=dev;
+    document.getElementById('deviation-message').textContent=msg;
+    document.getElementById('deviation-target').textContent=targetQ>0?'約'+targetQ:'達成！';
+    document.getElementById('deviation-bar').style.width=Math.min(100,Math.max(0,(dev-40)/30*100))+'%';
+  }
 
   // 弱点リスト
-  const list = document.getElementById('weak-list');
-  const sorted = items.filter(i=>i.count>0).sort((a,b)=>(a.avg??999)-(b.avg??999));
+  const list=document.getElementById('weak-list');
+  const sorted=items.filter(i=>i.count>0).sort((a,b)=>(a.avg??999)-(b.avg??999));
   if(!sorted.length){
-    list.innerHTML = '<div style="color:var(--gray400);font-size:13px;text-align:center;padding:24px">演習を積むと苦手分野が表示されます</div>';
+    list.innerHTML='<div style="color:var(--slate3);font-size:13px;text-align:center;padding:24px;font-style:italic">演習を積むと苦手分野が表示されます</div>';
   } else {
-    list.innerHTML = sorted.map(({label,avg,count},i)=>{
-      const pct = avg??0;
-      const cls = pct<45?'low':pct<70?'mid':'high';
-      const rankCls = i<3?'top':'';
+    list.innerHTML=sorted.map(({label,avg,count},i)=>{
+      const pct=avg??0;
+      const cls=pct<45?'low':pct<70?'mid':'high';
+      const rankCls=i===0?'top1':i===1?'top2':i===2?'top3':'';
       return `<div class="weak-item">
         <span class="weak-rank ${rankCls}">${i+1}</span>
-        <span class="weak-name">${label} <span style="font-size:11px;color:var(--gray400)">(${count}問)</span></span>
+        <span class="weak-name">${label} <span style="font-size:11px;color:var(--slate3)">(${count}問)</span></span>
         <div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
         <span class="weak-pct">${avg!==null?avg+'%':'—'}</span>
       </div>`;
@@ -700,118 +855,72 @@ function updateAnalysis(){
   }
 
   // 科目別棒グラフ
-  const chartEl = document.getElementById('subject-chart');
-  const maxCount = Math.max(...Object.values(subjCount), 1);
+  const chartEl=document.getElementById('subject-chart');
+  const maxC=Math.max(...Object.values(subjCount),1);
   if(!Object.keys(subjCount).length){
-    chartEl.innerHTML = '<div style="color:var(--gray400);font-size:13px;text-align:center;padding:16px">データがありません</div>';
+    chartEl.innerHTML='<div style="color:var(--slate3);font-size:13px;text-align:center;padding:16px;font-style:italic">データがありません</div>';
   } else {
-    chartEl.innerHTML = Object.entries(subjCount).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <span style="font-size:12px;color:var(--gray600);width:60px;flex-shrink:0;text-align:right">${s}</span>
-        <div style="flex:1;height:8px;background:var(--gray200);border-radius:4px;overflow:hidden">
-          <div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--indigo));width:${Math.round(c/maxCount*100)}%"></div>
+    chartEl.innerHTML=Object.entries(subjCount).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:12px;color:var(--slate);width:90px;flex-shrink:0;text-align:right;font-weight:500">${s}</span>
+        <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+          <div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--cyan));width:${Math.round(c/maxC*100)}%;transition:width 0.5s"></div>
         </div>
-        <span style="font-size:12px;color:var(--gray600);width:24px">${c}</span>
+        <span style="font-size:12px;font-weight:700;color:var(--slate);width:24px">${c}</span>
       </div>`).join('');
   }
 
+  // レーダーチャート
+  drawRadarChart(items);
   updateHeaderStats();
 }
 
-async function generateFigure(questionText){
-  const figEl = document.getElementById('svg-figure');
-  const svgEl = document.getElementById('svg-content');
-  figEl.classList.remove('hidden');
-  svgEl.innerHTML = '<div style="color:var(--gray400);font-size:13px;padding:8px">図形を生成中...</div>';
-
-  const prompt = `次の数学の問題に補助図形が必要か判断し、必要な場合のみSVGコードを出力してください。
-
-【問題】
-${questionText}
-
-ルール：
-- 図形が問題理解に役立つ場合のみSVGを出力する
-- 図形不要な場合は「NOFIGURE」とだけ出力する
-- SVGのみ出力（説明文・コードブロック記号不要）
-- サイズは width="400" height="300" に固定
-- 座標軸は薄いグレー(#ccc)で描く
-- 図形は青(#2563EB)か黒(#333)で描く
-- ラベル・数値はfont-size="14"で読みやすく
-- 余白を十分とりシンプルに描く
-- 不正確でも概念が伝わればよい`;
-
-  try{
-    const text = await callWorker(prompt);
-    if(text.trim() === 'NOFIGURE' || !text.includes('<svg')){
-      figEl.classList.add('hidden');
-      return;
-    }
-    // SVGタグだけ抽出
-    const match = text.match(/<svg[\s\S]*<\/svg>/i);
-    if(match){
-      svgEl.innerHTML = match[0];
-      figEl.classList.remove('hidden');
-    } else {
-      figEl.classList.add('hidden');
-    }
-  } catch(e){
-    figEl.classList.add('hidden');
+function drawRadarChart(items){
+  const canvas=document.getElementById('radar-chart');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const subjAvg={};
+  for(const {sname,avg,count} of items){
+    if(count===0) continue;
+    if(!subjAvg[sname]) subjAvg[sname]=[];
+    subjAvg[sname].push(avg||0);
   }
-}
-
-async function askQuestion(){
-  if(!currentQuestion){alert('まず問題を生成してください');return;}
-  const q = document.getElementById('question-input').value.trim();
-  if(!q){alert('質問を入力してください');return;}
-
-  const btn = document.getElementById('ask-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading"></span> 回答中...';
-
-  const fb = document.getElementById('feedback-question');
-  fb.className = 'feedback hint';
-  fb.textContent = '回答を生成しています...';
-  fb.classList.remove('hidden');
-
-  const prompt = `あなたは${getLevelDesc()}の受験指導専門家です。
-
-【問題】
-${currentQuestion}
-
-【生徒からの質問】
-${q}
-
-この質問に対して、丁寧にわかりやすく説明してください。
-- 考え方の糸口から順序立てて説明する
-- ${getLevelDesc()}レベルに合った解説をする
-- Markdownや装飾記号は使わずプレーンテキストで出力する`;
-
-  try{
-    const text = await callWorker(prompt);
-    fb.textContent = text;
-  } catch(e){
-    fb.className = 'feedback err';
-    fb.textContent = 'エラー: ' + e.message;
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '質問する →';
+  const subjects=Object.keys(subjAvg);
+  if(subjects.length<3){
+    ctx.fillStyle='#94A3B8';ctx.font='13px sans-serif';ctx.textAlign='center';
+    ctx.fillText('3科目以上演習するとチャートが表示されます',W/2,H/2);
+    return;
   }
+  const n=Math.min(subjects.length,8);
+  const labels=subjects.slice(0,n);
+  const values=labels.map(s=>Math.round(subjAvg[s].reduce((a,b)=>a+b,0)/subjAvg[s].length));
+  const cx=W/2,cy=H/2,r=Math.min(W,H)*0.33,step=(Math.PI*2)/n;
+  [0.25,0.5,0.75,1].forEach(ratio=>{
+    ctx.beginPath();
+    for(let i=0;i<n;i++){const a=-Math.PI/2+step*i;i===0?ctx.moveTo(cx+r*ratio*Math.cos(a),cy+r*ratio*Math.sin(a)):ctx.lineTo(cx+r*ratio*Math.cos(a),cy+r*ratio*Math.sin(a));}
+    ctx.closePath();ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.stroke();
+  });
+  for(let i=0;i<n;i++){const a=-Math.PI/2+step*i;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.stroke();}
+  ctx.beginPath();
+  for(let i=0;i<n;i++){const a=-Math.PI/2+step*i,v=values[i]/100;i===0?ctx.moveTo(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a)):ctx.lineTo(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a));}
+  ctx.closePath();ctx.fillStyle='rgba(59,130,246,0.15)';ctx.fill();ctx.strokeStyle='#3B82F6';ctx.lineWidth=2.5;ctx.stroke();
+  for(let i=0;i<n;i++){const a=-Math.PI/2+step*i,v=values[i]/100,x=cx+r*v*Math.cos(a),y=cy+r*v*Math.sin(a);ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle='#1D4ED8';ctx.fill();}
+  ctx.textAlign='center';
+  for(let i=0;i<n;i++){const a=-Math.PI/2+step*i,lx=cx+(r+30)*Math.cos(a),ly=cy+(r+30)*Math.sin(a);ctx.fillStyle='#1E293B';ctx.font='bold 12px sans-serif';ctx.fillText(labels[i],lx,ly+4);ctx.fillStyle='#3B82F6';ctx.font='bold 11px sans-serif';ctx.fillText(values[i]+'%',lx,ly+18);}
 }
 
 function exportJSON(){
-  const data = {exportDate:new Date().toISOString(), level:'A', history};
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `exam-history-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
+  const data={exportDate:new Date().toISOString(),level:currentLevel,history};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`exam-history-${new Date().toISOString().slice(0,10)}.json`;a.click();
 }
 
 function clearHistory(){
   if(confirm('学習履歴をすべて削除しますか？')){
-    localStorage.removeItem('examHistory_v3');
-    history = {};
-    updateAnalysis();
+    localStorage.removeItem('examHistory_v3');history={};updateAnalysis();
   }
 }
 
@@ -823,10 +932,9 @@ function switchTab(name){
   if(name==='analysis') updateAnalysis();
 }
 
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
-}
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
+setLevel(currentLevel);
 updateHeaderStats();
 </script>
 </body>
