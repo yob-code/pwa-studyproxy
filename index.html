@@ -546,7 +546,10 @@ document.getElementById('field').addEventListener('change', function(){ currentF
 async function callWorker(prompt){
   const res = await fetch(WORKER_URL,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
+    headers:{
+      'Content-Type':'application/json',
+      'X-App-Token':'exam2026-s7Kx9mQpL3nR'
+    },
     body:JSON.stringify({prompt})
   });
   const data = await res.json();

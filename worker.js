@@ -1,24 +1,35 @@
 // Cloudflare Worker - Gemini APIプロキシ
-// 環境変数 GEMINI_API_KEY を設定すること
-
-const ALLOWED_ORIGIN = '*'; // 本番では GitHub Pages の URL に変更推奨
-// 例: 'https://yourusername.github.io'
+// 環境変数: GEMINI_API_KEY, APP_TOKEN, ALLOWED_ORIGIN を設定すること
 
 export default {
   async fetch(request, env) {
+    const ALLOWED_ORIGIN = env.ALLOWED_ORIGIN || '*';
+
     // CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
           'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Headers': 'Content-Type, X-App-Token',
         },
       });
     }
 
     if (request.method !== 'POST') {
       return new Response('Method Not Allowed', { status: 405 });
+    }
+
+    // ① Originチェック
+    const origin = request.headers.get('Origin');
+    if (env.ALLOWED_ORIGIN && origin !== env.ALLOWED_ORIGIN) {
+      return new Response('Forbidden', { status: 403 });
+    }
+
+    // ② トークンチェック
+    const token = request.headers.get('X-App-Token');
+    if (!env.APP_TOKEN || token !== env.APP_TOKEN) {
+      return new Response('Unauthorized', { status: 401 });
     }
 
     try {
@@ -41,13 +52,14 @@ export default {
       }
 
       const geminiRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.7, maxOutputTokens: 1500 },
+            generationConfig: { temperature: 0.7, maxOutputTokens: 32768 },
+            systemInstruction: { parts: [{ text: 'Markdownの見出し・箇条書き・装飾記号は使用しないでください。' }] },
           }),
         }
       );
