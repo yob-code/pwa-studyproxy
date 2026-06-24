@@ -437,7 +437,7 @@ const LEVELS = {
     label:'レベル C', sub:'共通テスト レベルC対策',
     note:'マーク式・標準レベル｜全科目対応',
     badge:'background:var(--green-light);color:#065F46',
-    prompt:'共通テスト（センター試験レベル）',
+    prompt:'共通テスト（大学入学共通テスト）',
   },
 };
 
@@ -563,7 +563,7 @@ async function generateQuestion(){
 【科目】${subjName}（${field}）
 
 出題形式のルール：
-- 実際の共通テスト・センター試験に忠実な形式にすること
+- 実際の大学入学共通テストに忠実な形式にすること
 - 「第○問」から始める大問形式
 - リード文や会話文・資料などを使った問題設定
 - 設問はア・イ・ウ・エなどカタカナで番号付け（例：アは何か）
@@ -966,7 +966,27 @@ function switchTab(name){
   if(name==='analysis') updateAnalysis();
 }
 
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    // 定期的に更新チェック（30秒ごと）
+    setInterval(() => reg.update(), 30000);
+
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      newWorker.addEventListener('statechange', () => {
+        if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+          // 自動的にskipWaitingを送信して即時更新
+          newWorker.postMessage('skipWaiting');
+        }
+      });
+    });
+  }).catch(()=>{});
+
+  // コントローラー変更時に自動リロード
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+}
 
 setLevel(currentLevel);
 updateHeaderStats();
