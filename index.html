@@ -244,7 +244,10 @@ textarea::placeholder{color:var(--slate3)}
       <div class="brand-icon">📚</div>
       <div>
         <div class="brand-name">受験AI</div>
-        <div class="brand-sub" id="brand-sub">難関国立文系 レベルA対策</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="brand-sub" id="brand-sub">難関国立文系 レベルA対策</div>
+          <span id="version-badge" style="font-size:10px;color:var(--slate3);background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:10px;letter-spacing:0.05em">v1.0.0</span>
+        </div>
       </div>
     </div>
     <div class="header-right">
@@ -425,6 +428,7 @@ textarea::placeholder{color:var(--slate3)}
 
 <script>
 const WORKER_URL = "https://study-proxy-morning-silence-f64f.ksey-fgljfsmg7475219t.workers.dev";
+const APP_VERSION = "1.0.0"; // アップデート時にここを変更
 
 const LEVELS = {
   A:{
@@ -968,21 +972,19 @@ function switchTab(name){
 
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').then(reg => {
-    // 定期的に更新チェック（30秒ごと）
-    setInterval(() => reg.update(), 30000);
+    // 起動時に即チェック
+    reg.update();
 
     reg.addEventListener('updatefound', () => {
       const newWorker = reg.installing;
       newWorker.addEventListener('statechange', () => {
         if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
-          // 自動的にskipWaitingを送信して即時更新
           newWorker.postMessage('skipWaiting');
         }
       });
     });
   }).catch(()=>{});
 
-  // コントローラー変更時に自動リロード
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload();
   });
@@ -990,6 +992,7 @@ if('serviceWorker' in navigator){
 
 setLevel(currentLevel);
 updateHeaderStats();
+document.getElementById('version-badge').textContent = 'v' + APP_VERSION;
 </script>
 </body>
 </html>
