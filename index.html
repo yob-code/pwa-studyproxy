@@ -428,7 +428,22 @@ textarea::placeholder{color:var(--slate3)}
 
 <script>
 const WORKER_URL = "https://study-proxy-morning-silence-f64f.ksey-fgljfsmg7475219t.workers.dev";
-const APP_VERSION = "2025.06.21 00:00"; // アップデート時に日時を変更
+// GitHubの最終コミット日時を自動取得
+async function fetchLastUpdated(){
+  try{
+    const res = await fetch('https://api.github.com/repos/yob-code/pwa-studyproxy/commits?per_page=1');
+    const data = await res.json();
+    const date = new Date(data[0].commit.committer.date);
+    const y = date.getFullYear();
+    const mo = String(date.getMonth()+1).padStart(2,'0');
+    const d = String(date.getDate()).padStart(2,'0');
+    const h = String(date.getHours()).padStart(2,'0');
+    const mi = String(date.getMinutes()).padStart(2,'0');
+    document.getElementById('version-badge').textContent = `${y}.${mo}.${d} ${h}:${mi}`;
+  } catch(e){
+    document.getElementById('version-badge').textContent = '更新確認中...';
+  }
+}
 
 const LEVELS = {
   A:{
@@ -992,7 +1007,7 @@ if('serviceWorker' in navigator){
 
 setLevel(currentLevel);
 updateHeaderStats();
-document.getElementById('version-badge').textContent = APP_VERSION;
+fetchLastUpdated();
 </script>
 </body>
 </html>
